@@ -143,7 +143,29 @@ namespace XufiScheduler
 
             return customerList;
         }
-
+        
+        static public Dictionary<string, string> getAppointmentDetails(string appointmentId)
+        {
+            string query = $"SELECT * FROM appointment WHERE appointmentId = '{appointmentId}'";
+            MySqlConnection c = new MySqlConnection(DataHelper.conString);
+            c.Open();
+            MySqlCommand cmd = new MySqlCommand(query, c);
+            Dictionary<string, string> appointmentDict = new Dictionary<string, string>();
+            using (MySqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while(rdr.Read())
+                {
+                    appointmentDict.Add("appointmentId", appointmentId);
+                    appointmentDict.Add("customerId", rdr[1].ToString());
+                    appointmentDict.Add("type", rdr[13].ToString());
+                    appointmentDict.Add("start", rdr[7].ToString());
+                    appointmentDict.Add("end", rdr[8].ToString());
+                }
+                rdr.Close();
+            }
+            c.Close();
+            return appointmentDict;
+        }
         public static int createId(string table)
         {
             MySqlConnection con = new MySqlConnection(connectstring);
