@@ -62,7 +62,7 @@ namespace XufiScheduler
         {
             if (UserSearch(textBox1.Text, textBox2.Text) != 0)
             {
-                Dashboard dashboard = new Dashboard();
+                MainForm dashboard = new MainForm();
                 dashboard.loginForm = this;
                 Logger.writeUserLogin(DataPipe.getCurrentUserId());//Get Current User ID
                 dashboard.Show();
