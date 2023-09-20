@@ -46,10 +46,13 @@ namespace XufiScheduler
                 UserControlBlank UIBlank = new UserControlBlank();
                 flowLayoutPanel1.Controls.Add(UIBlank);
             }
+            DateTime tmpdate = startMonth;
             for (int i = 1; i < days; i++)
             {
                 DayControlUser UIDay = new DayControlUser();
                 UIDay.days(i);
+                tmpdate.AddDays(1);
+                UIDay.appts(DataPipe.getNumAppts(tmpdate.ToString("yyyy-MM-dd")));
                 flowLayoutPanel1.Controls.Add(UIDay);
             }
         }

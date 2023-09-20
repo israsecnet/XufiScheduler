@@ -230,6 +230,22 @@ namespace XufiScheduler
             return newId(ids);
         }
 
+        public static int getNumAppts(string date)
+        {
+            int numAppts = 0;
+            MySqlConnection con = new MySqlConnection(connectstring);
+            con.Open();
+            MySqlCommand cmd = new MySqlCommand($"SELECT COUNT(*) FROM appointment WHERE start LIKE '{date}'", con);
+            using (MySqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                    numAppts = Convert.ToInt32(rdr[0]);
+                }
+                rdr.Close();
+            }
+                return numAppts;
+        }
         public static bool addCustomer(string customerName, string address, string address2, string city, string country, string zip, string phone, int active)
         {
             bool flag = false;
@@ -299,7 +315,7 @@ namespace XufiScheduler
                     rdr.Close();
                 }
                 DateTime dt = DateTime.Now;
-                cmd = new MySqlCommand($"INSERT INTO address VALUES ({addressId},'{address.ToString()}','{address2.ToString()}',{cityId},{zip},{phone.ToString()},'{dt.ToString("dd/MM/yyy HH:mm:ss")}',{getCurrentUserName()},'{dt.ToString("dd/MM/yyy HH:mm:ss")}',{getCurrentUserName()})", con);
+                cmd = new MySqlCommand($"INSERT INTO address VALUES ({addressId},'{address.ToString()}','{address2.ToString()}',{cityId},{zip},{phone.ToString()},'{dt.ToString("yyyy-MM-dd HH:mm:ss")}',{getCurrentUserName()},'{dt.ToString("yyyy-MM-dd HH:mm:ss")}',{getCurrentUserName()})", con);
                 cmd.ExecuteNonQuery();
             }
             con.Close();
@@ -337,7 +353,7 @@ namespace XufiScheduler
                         }
                         rdr.Close();
                     }
-                    cmd = new MySqlCommand($"INSERT INTO city VALUES ({cityId}, {city}, {addCountry(country)},{dt},{getCurrentUserName()},{dt}, {getCurrentUserName()} )");
+                    cmd = new MySqlCommand($"INSERT INTO city VALUES ({cityId}, {city}, {addCountry(country)},{dt},{getCurrentUserName()},{dt}, {getCurrentUserName()} )", con);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -353,7 +369,7 @@ namespace XufiScheduler
                     {
                         cityId = Convert.ToInt32(rdr[0]);
                     }
-                    cmd = new MySqlCommand($"INSERT INTO city VALUES ({cityId}, {city}, {addCountry(country)},{dt},{getCurrentUserName()},{dt}, {getCurrentUserName()} )");
+                    cmd = new MySqlCommand($"INSERT INTO city VALUES ({cityId}, {city}, {addCountry(country)},{dt},{getCurrentUserName()},{dt}, {getCurrentUserName()} ), con");
                     cmd.ExecuteNonQuery();
                     rdr.Close();
                 }

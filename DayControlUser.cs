@@ -21,5 +21,10 @@ namespace XufiScheduler
         {
             dayNumber.Text = numday + "";
         }
+
+        public void appts(int numAppts)
+        {
+            label2.Text = numAppts +"";
+        }
     }
 }
