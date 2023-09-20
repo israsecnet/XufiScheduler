@@ -264,21 +264,8 @@ namespace XufiScheduler
             int custId = lastId + 1;
             DateTime dt = DateTime.Now;
             int addressId = addAddress(address, address2, city, country, zip, phone);
-            cmd = new MySqlCommand($"INSERT INTO customer VALUES ({custId.ToString()}, {customerName.ToString()}, {addressId.ToString()}, {active.ToString()}, @dt1, @user1, @dt2, @user2 )", con);
-            cmd.Parameters.AddWithValue("@user1", getCurrentUserName());
-            cmd.Parameters.AddWithValue("@user2", getCurrentUserName());
-            cmd.Parameters.AddWithValue("@dt1", dt);
-            cmd.Parameters.AddWithValue("@dt2", dt);
-            try
-            {
-                cmd.ExecuteNonQuery();
-                flag = true;
-            }
-            catch (Exception ex)
-            {
-                flag = false;
-                Console.WriteLine(ex.ToString());
-            }
+            cmd = new MySqlCommand($"INSERT INTO customer VALUES ({custId.ToString()}, '{customerName.ToString()}', {addressId.ToString()}, {active.ToString()}, '{dt.ToString("yyyy-MM-dd HH:mm:ss")}', '{getCurrentUserName()}', '{dt.ToString("yyyy-MM-dd HH:mm:ss")}', '{getCurrentUserName()}')", con);
+            cmd.ExecuteNonQuery();
             con.Close();
             return flag;
         }
@@ -289,9 +276,11 @@ namespace XufiScheduler
             MySqlConnection con = new MySqlConnection(connectstring);
             con.Open();
             int cityId = addCity(city, country);
-            MySqlCommand cmd = new MySqlCommand($"SELECT phone FROM address WHERE (address='{address}') AND (city='{city}') AND (postalCode='{zip}') AND (phone='{phone}')", con);
-            try
+            MySqlCommand cmd = new MySqlCommand($"SELECT COUNT(addressId) FROM address WHERE (address='{address}') AND (cityId={cityId}) AND (postalCode='{zip}') AND (phone='{phone}')", con);
+            var count = cmd.ExecuteScalar();
+            if (Convert.ToInt32(count) > 0)
             {
+                cmd = new MySqlCommand($"SELECT addressId FROM address WHERE (address='{address}') AND (city='{city}') AND (postalCode='{zip}') AND (phone='{phone}')", con);
                 using (MySqlDataReader rdr = cmd.ExecuteReader())
                 {
                     while (rdr.Read())
@@ -301,115 +290,61 @@ namespace XufiScheduler
                     rdr.Close();
                 }
             }
-
-            catch (Exception ex)
+            else
             {
-            
-                cmd = new MySqlCommand($"SELECT addressId FROM address ORDER BY addressId DESC LIMIT 1", con);
-                using (MySqlDataReader rdr = cmd.ExecuteReader())
-                {
-                    while(rdr.Read())
-                    {
-                        addressId = Convert.ToInt32(rdr[0]);
-                    }
-                    rdr.Close();
-                }
+                cmd = new MySqlCommand($"SELECT addressId FROM address ORDER BY addressId DESC LIMIT 1",con);
+                addressId = Convert.ToInt32(cmd.ExecuteScalar());
+                addressId++;
                 DateTime dt = DateTime.Now;
-                cmd = new MySqlCommand($"INSERT INTO address VALUES ({addressId},'{address.ToString()}','{address2.ToString()}',{cityId},{zip},{phone.ToString()},'{dt.ToString("yyyy-MM-dd HH:mm:ss")}',{getCurrentUserName()},'{dt.ToString("yyyy-MM-dd HH:mm:ss")}',{getCurrentUserName()})", con);
-                cmd.ExecuteNonQuery();
+                cmd = new MySqlCommand($"INSERT INTO address VALUES ({addressId},'{address}','{address2}',{cityId},{zip},{phone}, '{dt.ToString("yyyy-MM-dd HH:mm:ss")}', '{getCurrentUserName()}', '{dt.ToString("yyyy-MM-dd HH:mm:ss")}', '{getCurrentUserName()}')", con);
+                cmd.ExecuteNonQuery();            
             }
-            con.Close();
             return addressId;
         }
-        public static int addCity(string city = "", string country = "")
+ 
+        public static int addCity(string city, string country)
         {
             int cityId = 0;
+            int countryId = addCountry(country);
             MySqlConnection con = new MySqlConnection(connectstring);
             con.Open();
-            MySqlCommand cmd = new MySqlCommand($"SELECT countryId FROM city WHERE (city={city})", con);
-            try
+            MySqlCommand cmd = new MySqlCommand($"SELECT COUNT(*) FROM city WHERE (countryId={countryId}) AND (city='{city}')", con);
+            if (Convert.ToInt32(cmd.ExecuteScalar()) > 0)
             {
-                using (MySqlDataReader rdr = cmd.ExecuteReader())
-                {
-                    while (rdr.Read())
-                    {
-                        cityId = Convert.ToInt32(rdr[0]);
-                    }
-                    rdr.Close();
-                }
-                if (addCountry(country) == cityId)
-                {
-                    return cityId;
-                }
-                else
-                {
-                    DateTime dt = DateTime.Now;
-                    cmd = new MySqlCommand($"SELECT cityId FROM city ORDER BY cityId DESC LIMIT 1", con);
-                    using (MySqlDataReader rdr = cmd.ExecuteReader())
-                    {
-                        while (rdr.Read())
-                        {
-                            cityId = Convert.ToInt32(rdr[0]);
-                        }
-                        rdr.Close();
-                    }
-                    cmd = new MySqlCommand($"INSERT INTO city VALUES ({cityId}, {city}, {addCountry(country)},{dt},{getCurrentUserName()},{dt}, {getCurrentUserName()} )", con);
-                    cmd.ExecuteNonQuery();
-                }
+                cmd = new MySqlCommand($"SELECT cityId FROM city WHERE (countryId={countryId}) AND (city='{city}') LIMIT 1", con);
+                return Convert.ToInt32(cmd.ExecuteScalar());
             }
-            catch (Exception e) 
+            else // create cityID
             {
-                Console.WriteLine(e.ToString());
+                cmd = new MySqlCommand($"SELECT cityID FROM city ORDER BY cityID DESC LIMIT 1", con);
+                cityId = Convert.ToInt32(cmd.ExecuteScalar());
+                cityId++;
                 DateTime dt = DateTime.Now;
-                cmd = new MySqlCommand($"SELECT cityId FROM city ORDER BY cityId DESC LIMIT 1", con);
-                try
-                {
-                    MySqlDataReader rdr = cmd.ExecuteReader();
-                    while (rdr.Read())
-                    {
-                        cityId = Convert.ToInt32(rdr[0]);
-                    }
-                    cmd = new MySqlCommand($"INSERT INTO city VALUES ({cityId}, {city}, {addCountry(country)},{dt},{getCurrentUserName()},{dt}, {getCurrentUserName()} ), con");
-                    cmd.ExecuteNonQuery();
-                    rdr.Close();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
+                cmd = new MySqlCommand($"INSERT INTO city VALUES ({cityId.ToString()}, '{city}', {countryId}, '{dt.ToString("yyyy-MM-dd HH:mm:ss")}', '{getCurrentUserName()}', '{dt.ToString("yyyy-MM-dd HH:mm:ss")}', '{getCurrentUserName()}')", con);
+                cmd.ExecuteNonQuery();
+                return cityId;
             }
-            con.Close();
-            return cityId;
         }
         public static int addCountry(string country)
         {
             int countryId = 0;
             MySqlConnection con = new MySqlConnection(connectstring);
             con.Open();
-            MySqlCommand cmd = new MySqlCommand($"SELECT countryId FROM country WHERE (country={country})", con);
-            MySqlCommand cmd2 = new MySqlCommand($"SELECT countryId FROM country ORDER BY countryId DESC LIMIT 1", con);
-            try
+            MySqlCommand cmd = new MySqlCommand($"SELECT COUNT(*) FROM country WHERE (country='{country}')", con);
+            var tmp = cmd.ExecuteScalar();
+            if (Convert.ToInt32(tmp) > 0)
             {
-                MySqlDataReader rdr = cmd.ExecuteReader();
-                while (rdr.Read())
-                {
-                    countryId = Convert.ToInt32(rdr[0]);
-                }
-                rdr.Close();
+                cmd = new MySqlCommand($"SELECT countryId FROM country WHERE (country='{country}')", con);
+                return Convert.ToInt32(cmd.ExecuteScalar());
             }
-            catch (Exception ex) 
+            else // create country ID
             {
-                Console.WriteLine(ex.ToString());
-                MySqlDataReader rdr = cmd2.ExecuteReader();
-                while (rdr.Read())
-                {
-                    countryId = Convert.ToInt32(rdr[0]);
-                }
-                rdr.Close();
-                countryId = countryId + 1;
+                cmd = new MySqlCommand($"SELECT countryId FROM country ORDER BY countryId DESC LIMIT 1", con);
+                countryId = Convert.ToInt32(cmd.ExecuteScalar());
+                countryId++;
                 DateTime dt = DateTime.Now;
-                cmd2 = new MySqlCommand($"INSERT INTO country VALUES ({countryId}, {country}, {dt}, {getCurrentUserName()}, {dt}, {getCurrentUserName()})", con);
-                cmd2.ExecuteNonQuery();
+                cmd = new MySqlCommand($"INSERT INTO country VALUES ({countryId}, '{country}', '{dt.ToString("yyyy-MM-dd HH:mm:ss")}', '{getCurrentUserName()}', '{dt.ToString("yyyy-MM-dd HH:mm:ss")}', '{getCurrentUserName()}')", con);
+                cmd.ExecuteNonQuery();
             }
             con.Close();
             return countryId;
