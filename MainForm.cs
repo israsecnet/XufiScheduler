@@ -90,6 +90,12 @@ namespace XufiScheduler
             Close();
         }
 
+        private void button5_Click(object sender, EventArgs e)
+        {
+            var appwin = new ManageCustomers();
+            appwin.Show();
+        }
+
         private void next_button(object sender, EventArgs e)
         {
             flowLayoutPanel1.Controls.Clear();

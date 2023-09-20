@@ -65,7 +65,29 @@ namespace XufiScheduler
             return list;
 
         }
-        
+
+        public static Dictionary<int,string> getCustomerDB()
+        {
+            string query = "SELECT customerId, customerName FROM customer";
+            MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
+            c.Open();
+            MySqlCommand cmd = new MySqlCommand(query, c);
+            Dictionary<int, string> customerList = new Dictionary<int, string>();
+            using (MySqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while(rdr.Read())
+                {
+                    customerList.Add(Convert.ToInt32(rdr[0]), rdr[1].ToString());
+                }
+                rdr.Close();
+            }
+            c.Close();
+
+            return customerList;
+            
+            
+        }
+
         public static int createId(string table)
         {
             MySqlConnection con = new MySqlConnection(connectstring);
