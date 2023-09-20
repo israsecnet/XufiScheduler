@@ -38,7 +38,43 @@ namespace XufiScheduler
             }
 
         }
-
+        public static bool detailCheck(string box1, string box2, string box3, string box4, string box5)
+        {
+            bool name = false;
+            bool address = false;
+            bool city = false;
+            bool postal = false;
+            bool phone = false;
+            if (box1 != string.Empty)
+            {
+                name = true;
+            }
+            if (box2 != string.Empty)
+            {
+                address = true;
+            }
+            if (box3 != string.Empty)
+            {
+                city = true;
+            }
+            if (box4 != string.Empty)
+            {
+                postal = true;
+            }
+            if (box5 != string.Empty)
+            {
+                phone = true;
+            }
+            if (!name || !address || !city || !postal || !phone)
+            {
+                MessageBox.Show("Please check all fields!", "Save error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
         private void cancelButton_Click(object sender, EventArgs e)
         {
             Close();
@@ -47,8 +83,9 @@ namespace XufiScheduler
         private void saveButton_Click(object sender, EventArgs e)
         {
             string timestamp = DateTime.Now.ToString("u");
+            string userName = DataPipe.getCurrentUserName();
             
-            bool completeForm = CustomerModify.detailCheck(textBox3.Text, textBox4.Text, textBox6.Text, textBox7.Text, textBox8.Text);
+            bool completeForm = CustomerAdd.detailCheck(textBox3.Text, textBox4.Text, textBox6.Text, textBox7.Text, textBox8.Text);
             if (completeForm && (radioButton1.Checked || radioButton2.Checked))
             {
                 if (radioButton1.Checked)
@@ -59,7 +96,7 @@ namespace XufiScheduler
                 {
                     DataPipe.addCustomer(textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox1.Text, textBox7.Text, textBox8.Text, 0);
                 }
-                
+                this.Close();
             }
         }
 

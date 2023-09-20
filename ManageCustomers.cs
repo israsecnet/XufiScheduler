@@ -16,6 +16,7 @@ namespace XufiScheduler
         {
             InitializeComponent();
             populateTable();
+            customerGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
 
         public void populateTable()
@@ -41,9 +42,25 @@ namespace XufiScheduler
 
         private void modify_customer_click(object sender, EventArgs e)
         {
-            int modId = Convert.ToInt32(customerGrid.CurrentRow.Cells[0].Value);
-            var appwin = new CustomerAdd(modId);
-            appwin.Show();
+            if (customerGrid.SelectedRows != null && customerGrid.SelectedRows.Count > 0)
+            {
+                int modId = Convert.ToInt32(customerGrid.CurrentRow.Cells[0].Value);
+                var appwin = new CustomerAdd(modId);
+                appwin.Show();
+            }
+        }
+
+        private void delete_click(object sender, EventArgs e)
+        {
+            if (customerGrid.SelectedRows != null && customerGrid.SelectedRows.Count > 0)
+            {
+                int modId = Convert.ToInt32(customerGrid.CurrentRow.Cells[0].Value);
+                DialogResult res = MessageBox.Show("Are you sure you want to delete?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (res == DialogResult.Yes)
+                {
+                    DataPipe.deleteCustomer(modId);
+                }
+            }
         }
     }
 }

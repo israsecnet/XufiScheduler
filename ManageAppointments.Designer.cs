@@ -34,8 +34,8 @@ namespace XufiScheduler
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.customerGrid = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.customerGrid)).BeginInit();
+            this.appointmentGrid = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.appointmentGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -66,6 +66,7 @@ namespace XufiScheduler
             this.button3.TabIndex = 9;
             this.button3.Text = "Delete";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.delete_click);
             // 
             // button2
             // 
@@ -85,15 +86,16 @@ namespace XufiScheduler
             this.button1.TabIndex = 7;
             this.button1.Text = "Modify";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // customerGrid
+            // appointmentGrid
             // 
-            this.customerGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.customerGrid.Location = new System.Drawing.Point(35, 76);
-            this.customerGrid.Name = "customerGrid";
-            this.customerGrid.RowHeadersVisible = false;
-            this.customerGrid.Size = new System.Drawing.Size(730, 285);
-            this.customerGrid.TabIndex = 6;
+            this.appointmentGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.appointmentGrid.Location = new System.Drawing.Point(35, 76);
+            this.appointmentGrid.Name = "appointmentGrid";
+            this.appointmentGrid.RowHeadersVisible = false;
+            this.appointmentGrid.Size = new System.Drawing.Size(730, 285);
+            this.appointmentGrid.TabIndex = 6;
             // 
             // ManageAppointments
             // 
@@ -105,10 +107,10 @@ namespace XufiScheduler
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.customerGrid);
+            this.Controls.Add(this.appointmentGrid);
             this.Name = "ManageAppointments";
             this.Text = "ManageAppointments";
-            ((System.ComponentModel.ISupportInitialize)(this.customerGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.appointmentGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -121,6 +123,6 @@ namespace XufiScheduler
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.DataGridView customerGrid;
+        private System.Windows.Forms.DataGridView appointmentGrid;
     }
 }

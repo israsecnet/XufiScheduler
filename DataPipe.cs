@@ -56,15 +56,58 @@ namespace XufiScheduler
             return max + 1;
         }
 
-        public static List<Customer> getCustomerList()
+        public static List<Appointment> getappts()
         {
-            List<Customer> list = new List<Customer>();
-            MySqlConnection con = new MySqlConnection(connectstring);
-            con.Open();
-            MySqlCommand cmd = new MySqlCommand("SELECT");
-            return list;
+            string query = "SELECT * FROM appointment";
+            MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
+            c.Open();
+            MySqlCommand cmd = new MySqlCommand(query, c);
+            List<Appointment> customerList = new List<Appointment>();
+            using (MySqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                    Appointment tmp = new Appointment();
+                    tmp.appointmentId = Convert.ToInt32(rdr[0]);
+                    tmp.customerId = Convert.ToInt32(rdr[1]);
+                    tmp.userId = Convert.ToInt32(rdr[2]);
+                    tmp.title = Convert.ToString(rdr[3]);
+                    tmp.description = Convert.ToString(rdr[4]);
+                    tmp.location = Convert.ToString(rdr[5]);
+                    tmp.contact = Convert.ToString(rdr[6]);
+                    tmp.type = Convert.ToString(rdr[7]);
+                    tmp.url = Convert.ToString(rdr[8]);
+                    tmp.start = DateTime.Parse(Convert.ToString(rdr[9]));
+                    tmp.end = DateTime.Parse(Convert.ToString(rdr[10]));
 
+                    customerList.Add(tmp);
+                }
+                rdr.Close();
+            }
+            c.Close();
+
+            return customerList;
         }
+
+        public static void deleteCustomer(int custId)
+        {
+            string query = $"DELETE FROM customer WHERE customerId={custId.ToString()}";
+            MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
+            c.Open();
+            MySqlCommand cmd = new MySqlCommand(query, c);
+            cmd.ExecuteNonQuery();
+            c.Close();
+        }
+        public static void deleteAppointment(int apptId)
+        {
+            string query = $"DELETE FROM appointment WHERE appointmentId={apptId.ToString()}";
+            MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
+            c.Open();
+            MySqlCommand cmd = new MySqlCommand(query, c);
+            cmd.ExecuteNonQuery();
+            c.Close();
+        }
+        
         public static Dictionary<string, string> getCustomerDetails(int customerId)
         {
             string query = $"SELECT * FROM customer WHERE customerId={customerId.ToString()}";
@@ -144,10 +187,10 @@ namespace XufiScheduler
             return customerList;
         }
         
-        static public Dictionary<string, string> getAppointmentDetails(string appointmentId)
+        static public Dictionary<string, string> getAppointmentDetails(int appointmentId)
         {
             string query = $"SELECT * FROM appointment WHERE appointmentId = '{appointmentId}'";
-            MySqlConnection c = new MySqlConnection(DataHelper.conString);
+            MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
             c.Open();
             MySqlCommand cmd = new MySqlCommand(query, c);
             Dictionary<string, string> appointmentDict = new Dictionary<string, string>();
@@ -155,11 +198,16 @@ namespace XufiScheduler
             {
                 while(rdr.Read())
                 {
-                    appointmentDict.Add("appointmentId", appointmentId);
+                    appointmentDict.Add("appointmentId", appointmentId.ToString());
                     appointmentDict.Add("customerId", rdr[1].ToString());
-                    appointmentDict.Add("type", rdr[13].ToString());
-                    appointmentDict.Add("start", rdr[7].ToString());
-                    appointmentDict.Add("end", rdr[8].ToString());
+                    appointmentDict.Add("title", rdr[3].ToString());
+                    appointmentDict.Add("description", rdr[4].ToString());
+                    appointmentDict.Add("location", rdr[5].ToString());
+                    appointmentDict.Add("contact", rdr[6].ToString());
+                    appointmentDict.Add("type", rdr[7].ToString());
+                    appointmentDict.Add("url", rdr[8].ToString());
+                    appointmentDict.Add("start", rdr[9].ToString());
+                    appointmentDict.Add("end", rdr[10].ToString());
                 }
                 rdr.Close();
             }
@@ -189,20 +237,18 @@ namespace XufiScheduler
             MySqlConnection con = new MySqlConnection(connectstring);
             con.Open();
             MySqlCommand cmd = new MySqlCommand($"SELECT customerId FROM customer ORDER BY customerId DESC LIMIT 1", con);
-            MySqlDataReader rdr = cmd.ExecuteReader();
-            if (rdr.HasRows)
+            using (MySqlDataReader rdr = cmd.ExecuteReader())
             {
-                while (rdr.Read())
+                while(rdr.Read())
                 {
-                    Console.WriteLine(rdr[0]);
                     lastId = Convert.ToInt32(rdr[0]);
                 }
+                rdr.Close();
             }
-            rdr.Close() ;
             int custId = lastId + 1;
             DateTime dt = DateTime.Now;
             int addressId = addAddress(address, address2, city, country, zip, phone);
-            cmd = new MySqlCommand($"INSERT INTO customer VALUES ({custId}, {customerName}, {addressId}, {active}, @dt1, @user1, @dt2, @user2 )", con);
+            cmd = new MySqlCommand($"INSERT INTO customer VALUES ({custId.ToString()}, {customerName.ToString()}, {addressId.ToString()}, {active.ToString()}, @dt1, @user1, @dt2, @user2 )", con);
             cmd.Parameters.AddWithValue("@user1", getCurrentUserName());
             cmd.Parameters.AddWithValue("@user2", getCurrentUserName());
             cmd.Parameters.AddWithValue("@dt1", dt);
@@ -230,29 +276,31 @@ namespace XufiScheduler
             MySqlCommand cmd = new MySqlCommand($"SELECT phone FROM address WHERE (address='{address}') AND (city='{city}') AND (postalCode='{zip}') AND (phone='{phone}')", con);
             try
             {
-                MySqlDataReader rdr = cmd.ExecuteReader();
-                while (rdr.Read())
-                {
-                    addressId = Convert.ToInt32(rdr[0]);
-                }
-                rdr.Close();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                cmd = new MySqlCommand($"SELECT addressId FROM address ORDER BY addressId DESC LIMIT 1", con);
-                MySqlDataReader rdr = cmd.ExecuteReader();
-                if (rdr.HasRows)
+                using (MySqlDataReader rdr = cmd.ExecuteReader())
                 {
                     while (rdr.Read())
                     {
                         addressId = Convert.ToInt32(rdr[0]);
                     }
+                    rdr.Close();
+                }
+            }
+
+            catch (Exception ex)
+            {
+            
+                cmd = new MySqlCommand($"SELECT addressId FROM address ORDER BY addressId DESC LIMIT 1", con);
+                using (MySqlDataReader rdr = cmd.ExecuteReader())
+                {
+                    while(rdr.Read())
+                    {
+                        addressId = Convert.ToInt32(rdr[0]);
+                    }
+                    rdr.Close();
                 }
                 DateTime dt = DateTime.Now;
-                cmd = new MySqlCommand($"INSERT INTO address ({addressId},{address},{address2},{cityId},{zip},{phone},{dt},{getCurrentUserName()},{dt},{getCurrentUserName()}");
-                //cmd.ExecuteReader();
-                rdr.Close();
+                cmd = new MySqlCommand($"INSERT INTO address VALUES ({addressId},'{address.ToString()}','{address2.ToString()}',{cityId},{zip},{phone.ToString()},'{dt.ToString("dd/MM/yyy HH:mm:ss")}',{getCurrentUserName()},'{dt.ToString("dd/MM/yyy HH:mm:ss")}',{getCurrentUserName()})", con);
+                cmd.ExecuteNonQuery();
             }
             con.Close();
             return addressId;
@@ -265,12 +313,14 @@ namespace XufiScheduler
             MySqlCommand cmd = new MySqlCommand($"SELECT countryId FROM city WHERE (city={city})", con);
             try
             {
-                MySqlDataReader rdr = cmd.ExecuteReader();
-                while (rdr.Read())
+                using (MySqlDataReader rdr = cmd.ExecuteReader())
                 {
-                    cityId = Convert.ToInt32(rdr[0]);
+                    while (rdr.Read())
+                    {
+                        cityId = Convert.ToInt32(rdr[0]);
+                    }
+                    rdr.Close();
                 }
-                rdr.Close();
                 if (addCountry(country) == cityId)
                 {
                     return cityId;
@@ -279,16 +329,15 @@ namespace XufiScheduler
                 {
                     DateTime dt = DateTime.Now;
                     cmd = new MySqlCommand($"SELECT cityId FROM city ORDER BY cityId DESC LIMIT 1", con);
-                    rdr = cmd.ExecuteReader();
-                    cityId = 0;
-                    if (rdr.HasRows)
+                    using (MySqlDataReader rdr = cmd.ExecuteReader())
                     {
                         while (rdr.Read())
                         {
                             cityId = Convert.ToInt32(rdr[0]);
                         }
+                        rdr.Close();
                     }
-                    cmd = new MySqlCommand($"INSERT INTO city ({cityId}, {city}, {addCountry(country)},{dt},{getCurrentUserName()},{dt}, {getCurrentUserName()} )");
+                    cmd = new MySqlCommand($"INSERT INTO city VALUES ({cityId}, {city}, {addCountry(country)},{dt},{getCurrentUserName()},{dt}, {getCurrentUserName()} )");
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -304,7 +353,7 @@ namespace XufiScheduler
                     {
                         cityId = Convert.ToInt32(rdr[0]);
                     }
-                    cmd = new MySqlCommand($"INSERT INTO city ({cityId}, {city}, {addCountry(country)},{dt},{getCurrentUserName()},{dt}, {getCurrentUserName()} )");
+                    cmd = new MySqlCommand($"INSERT INTO city VALUES ({cityId}, {city}, {addCountry(country)},{dt},{getCurrentUserName()},{dt}, {getCurrentUserName()} )");
                     cmd.ExecuteNonQuery();
                     rdr.Close();
                 }
@@ -343,7 +392,7 @@ namespace XufiScheduler
                 rdr.Close();
                 countryId = countryId + 1;
                 DateTime dt = DateTime.Now;
-                cmd2 = new MySqlCommand($"INSERT INTO country ({countryId}, {country}, {dt}, {getCurrentUserName()}, {dt}, {getCurrentUserName()})", con);
+                cmd2 = new MySqlCommand($"INSERT INTO country VALUES ({countryId}, {country}, {dt}, {getCurrentUserName()}, {dt}, {getCurrentUserName()})", con);
                 cmd2.ExecuteNonQuery();
             }
             con.Close();

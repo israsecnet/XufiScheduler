@@ -108,25 +108,7 @@
       <DependentUpon>Appointment Add.cs</DependentUpon>
     </Compile>
     <Compile Include="Appointment.cs" />
-    <Compile Include="Customer Modify.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Customer Modify.Designer.cs">
-      <DependentUpon>Customer Modify.cs</DependentUpon>
-    </Compile>
     <Compile Include="Customer.cs" />
-    <Compile Include="Dashboard.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dashboard.Designer.cs">
-      <DependentUpon>Dashboard.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Appointment Modify.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Appointment Modify.Designer.cs">
-      <DependentUpon>Appointment Modify.cs</DependentUpon>
-    </Compile>
     <Compile Include="DataPipe.cs" />
     <Compile Include="DayControlUser.cs">
       <SubType>UserControl</SubType>
@@ -175,15 +157,6 @@
     </Compile>
     <EmbeddedResource Include="Appointment Add.resx">
       <DependentUpon>Appointment Add.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Appointment Modify.resx">
-      <DependentUpon>Appointment Modify.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Customer Modify.resx">
-      <DependentUpon>Customer Modify.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dashboard.resx">
-      <DependentUpon>Dashboard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DayControlUser.resx">
       <DependentUpon>DayControlUser.cs</DependentUpon>
