@@ -15,6 +15,9 @@ namespace XufiScheduler
         public ApptAdd()
         {
             InitializeComponent();
+            var customerdb = DataPipe.getCustomerDB();
+            var tmpdb = from row in customerdb select new { customerId = row.Key, customerName = row.Value };
+            comboBox1.DataSource = tmpdb.ToArray();
         }
 
         private void cancelButton_Click(object sender, EventArgs e)

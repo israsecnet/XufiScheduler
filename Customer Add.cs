@@ -17,6 +17,28 @@ namespace XufiScheduler
             InitializeComponent();
         }
 
+        public CustomerAdd(int customerId)
+        {
+            InitializeComponent();
+            Dictionary<string, string> tmpdata = DataPipe.getCustomerDetails(customerId);
+            textBox3.Text = tmpdata["customerName"].ToString();
+            textBox4.Text = tmpdata["address"].ToString();
+            textBox5.Text = tmpdata["address2"].ToString();
+            textBox6.Text = tmpdata["city"].ToString();
+            textBox1.Text = tmpdata["country"].ToString();
+            textBox7.Text = tmpdata["zip"].ToString();
+            textBox8.Text = tmpdata["phone"].ToString();
+            if (tmpdata["active"] == "1")
+            {
+                radioButton1.Checked = true;
+            }
+            else
+            {
+                radioButton2.Checked = true;
+            }
+
+        }
+
         private void cancelButton_Click(object sender, EventArgs e)
         {
             Close();

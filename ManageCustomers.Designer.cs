@@ -55,6 +55,7 @@ namespace XufiScheduler
             this.button1.TabIndex = 1;
             this.button1.Text = "Modify";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.modify_customer_click);
             // 
             // button2
             // 
@@ -64,6 +65,7 @@ namespace XufiScheduler
             this.button2.TabIndex = 2;
             this.button2.Text = "Add";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.add_customer_click);
             // 
             // button3
             // 
@@ -82,6 +84,7 @@ namespace XufiScheduler
             this.button4.TabIndex = 4;
             this.button4.Text = "Exit";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.exit_button);
             // 
             // label1
             // 

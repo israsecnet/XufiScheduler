@@ -87,12 +87,18 @@ namespace XufiScheduler
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Close();
+            this.Close();
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
             var appwin = new ManageCustomers();
+            appwin.Show();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            var appwin = new ManageAppointments();
             appwin.Show();
         }
 

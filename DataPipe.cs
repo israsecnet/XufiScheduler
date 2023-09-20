@@ -65,7 +65,65 @@ namespace XufiScheduler
             return list;
 
         }
+        public static Dictionary<string, string> getCustomerDetails(int customerId)
+        {
+            string query = $"SELECT * FROM customer WHERE customerId={customerId.ToString()}";
+            MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
+            c.Open();
+            MySqlCommand cmd = new MySqlCommand(query, c);
+            Dictionary<string, string> customerInfo = new Dictionary<string, string>();
+            using (MySqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                    customerInfo.Add("customerName", rdr[1].ToString());
+                    customerInfo.Add("addressId", rdr[2].ToString());
+                    customerInfo.Add("active", rdr[3].ToString());
+                }
+                rdr.Close();
+            }
 
+            query = $"SELECT * FROM address WHERE addressId={customerInfo["addressId"]}";
+            cmd = new MySqlCommand(query, c);
+            using (MySqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                    customerInfo.Add("address", rdr[1].ToString());
+                    customerInfo.Add("address2", rdr[2].ToString());
+                    customerInfo.Add("cityId", rdr[3].ToString());
+                    customerInfo.Add("zip", rdr[4].ToString());
+                    customerInfo.Add("phone", rdr[5].ToString());
+
+                }
+                rdr.Close();
+            }
+
+            query = $"SELECT * FROM city WHERE cityId={customerInfo["cityId"]}";
+            cmd = new MySqlCommand(query, c);
+            using (MySqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                    customerInfo.Add("city", rdr[1].ToString());
+                    customerInfo.Add("countryId", rdr[2].ToString());
+                }
+                rdr.Close();
+            }
+
+            query = $"SELECT * FROM country WHERE countryId={customerInfo["countryId"]}";
+            cmd = new MySqlCommand(query, c);
+            using (MySqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                    customerInfo.Add("country", rdr[1].ToString());
+                }
+                rdr.Close();
+            }
+            c.Close();
+            return customerInfo;
+        }
         public static Dictionary<int,string> getCustomerDB()
         {
             string query = "SELECT customerId, customerName FROM customer";
@@ -84,8 +142,6 @@ namespace XufiScheduler
             c.Close();
 
             return customerList;
-            
-            
         }
 
         public static int createId(string table)

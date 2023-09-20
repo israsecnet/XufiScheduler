@@ -27,5 +27,23 @@ namespace XufiScheduler
             customerGrid.Columns[1].HeaderCell.Value = "Customer Name";
 
         }
+
+        private void add_customer_click(object sender, EventArgs e)
+        {
+            var appwin = new CustomerAdd();
+            appwin.Show();
+        }
+
+        private void exit_button(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void modify_customer_click(object sender, EventArgs e)
+        {
+            int modId = Convert.ToInt32(customerGrid.CurrentRow.Cells[0].Value);
+            var appwin = new CustomerAdd(modId);
+            appwin.Show();
+        }
     }
 }

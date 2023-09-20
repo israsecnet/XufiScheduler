@@ -17,11 +17,6 @@ namespace XufiScheduler
             InitializeComponent();
         }
 
-        public void populateCombo()
-        {
-            comboBox1.Items.Clear();
-            
-        }
         private void cancelButton_Click_1(object sender, EventArgs e)
         {
             Close();
