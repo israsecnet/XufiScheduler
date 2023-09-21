@@ -191,7 +191,7 @@ namespace XufiScheduler
 
         private void exit_button(object sender, EventArgs e)
         {
-            this.Close();
+            Application.Exit();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -220,6 +220,20 @@ namespace XufiScheduler
                 displayDaysWeeks();
             }
             
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            if (label8.Text == "UTC")
+            {
+                label8.Text = "EST";
+                DataPipe.est = true;
+            }
+            else
+            {
+                label8.Text = "UTC";
+                DataPipe.est = false;
+            }
         }
 
         private void next_button(object sender, EventArgs e)

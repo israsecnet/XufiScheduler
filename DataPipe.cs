@@ -17,7 +17,8 @@ namespace XufiScheduler
         private static int currentUser;
         private static string currentUserName;
         public static string connectstring = "Server=127.0.0.1;User ID=sqlUser;Password=Passw0rd!;Database=client_schedule;";
-        
+        static public bool est = false;
+
         public static int getCurrentUserId()
         {
             return currentUser;
@@ -77,8 +78,17 @@ namespace XufiScheduler
                     tmp.contact = Convert.ToString(rdr[6]);
                     tmp.type = Convert.ToString(rdr[7]);
                     tmp.url = Convert.ToString(rdr[8]);
-                    tmp.start = DateTime.Parse(Convert.ToString(rdr[9]));
-                    tmp.end = DateTime.Parse(Convert.ToString(rdr[10]));
+                    if (est)
+                    {
+                        tmp.start = DateTime.Parse(Convert.ToString(rdr[9])).ToLocalTime();
+                        tmp.end = DateTime.Parse(Convert.ToString(rdr[10])).ToLocalTime();
+                    }
+                    else
+                    {
+                        tmp.start = DateTime.Parse(Convert.ToString(rdr[9]));
+                        tmp.end = DateTime.Parse(Convert.ToString(rdr[10]));
+                    }
+                    
 
                     customerList.Add(tmp);
                 }
@@ -136,7 +146,19 @@ namespace XufiScheduler
             MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
             c.Open();
             DateTime dt = DateTime.Now;
-            MySqlCommand cmd = new MySqlCommand($"UPDATE appointment SET title='{title}', description='{description}', location='{location}',contact='{contact}',type='{type}',url='{url}',start='{start}', end='{end}', lastUpdateBy='{getCurrentUserName()}', lastUpdate='{dt.ToString("yyyy-MM-dd HH:mm:ss")}' WHERE appointmentId={appointmentId}", c);
+            string end1, start1;
+            if (est)
+            {
+                end1 = DateTime.Parse(end).ToUniversalTime().ToString();
+                start1 = DateTime.Parse(start).ToUniversalTime().ToString();
+            }
+            else
+            {
+                end1 = end;
+                start1 = start;
+            }
+            
+            MySqlCommand cmd = new MySqlCommand($"UPDATE appointment SET title='{title}', description='{description}', location='{location}',contact='{contact}',type='{type}',url='{url}',start='{start1}', end='{end1}', lastUpdateBy='{getCurrentUserName()}', lastUpdate='{dt.ToString("yyyy-MM-dd HH:mm:ss")}' WHERE appointmentId={appointmentId}", c);
             cmd.ExecuteNonQuery();
         }
         //Update Customer details
@@ -230,8 +252,17 @@ namespace XufiScheduler
                     appointmentDict.Add("contact", rdr[6].ToString());
                     appointmentDict.Add("type", rdr[7].ToString());
                     appointmentDict.Add("url", rdr[8].ToString());
-                    appointmentDict.Add("start", rdr[9].ToString());
-                    appointmentDict.Add("end", rdr[10].ToString());
+                    if (est)
+                    {
+                        appointmentDict.Add("start", DateTime.Parse(rdr[9].ToString()).ToLocalTime().ToString());
+                        appointmentDict.Add("end", DateTime.Parse(rdr[10].ToString()).ToLocalTime().ToString());
+                    }
+                    else
+                    {
+                        appointmentDict.Add("start", rdr[9].ToString());
+                        appointmentDict.Add("end", rdr[10].ToString());
+                    }
+                    
                 }
                 rdr.Close();
             }
@@ -261,7 +292,15 @@ namespace XufiScheduler
                     Appointment appointment = new Appointment();
                     appointment.customerId = Convert.ToInt32(rdr[0]);
                     appointment.title = rdr[1].ToString();
-                    appointment.start = DateTime.Parse(rdr[2].ToString());
+                    if (est)
+                    {
+                        appointment.start = DateTime.Parse(rdr[2].ToString()).ToLocalTime();
+                    }
+                    else
+                    {
+                        appointment.start = DateTime.Parse(rdr[2].ToString());
+                    }
+                    
                     appointmentList.Add(appointment);
                 }
                 rdr.Close();
@@ -301,6 +340,16 @@ namespace XufiScheduler
                 int newId = Convert.ToInt32(cmd.ExecuteScalar());
                 newId++;
                 DateTime dt = DateTime.Now;
+                if (est)
+                {
+                    string start1 = DateTime.Parse(start).ToLocalTime().ToString();
+                    string end1 = DateTime.Parse(end).ToLocalTime().ToString();
+                }
+                else
+                {
+                    string start1 = start;
+                    string end1 = end;
+                }
                 cmd = new MySqlCommand($"INSERT INTO appointment VALUES ({newId},{customerId},{DataPipe.getCurrentUserId()},'{title}','{description}','{location}','{contact}','{type}', '{url}', '{start}','{end}', '{dt.ToString("yyyy-MM-dd HH:mm:ss")}', '{getCurrentUserName()}', '{dt.ToString("yyyy-MM-dd HH:mm:ss")}', '{getCurrentUserName()}')", con);
                 cmd.ExecuteNonQuery();
                 result = true;
