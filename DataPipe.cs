@@ -89,6 +89,7 @@ namespace XufiScheduler
             return customerList;
         }
 
+        //Delete customer
         public static void deleteCustomer(int custId)
         {
             string query = $"DELETE FROM customer WHERE customerId={custId.ToString()}";
@@ -98,6 +99,7 @@ namespace XufiScheduler
             cmd.ExecuteNonQuery();
             c.Close();
         }
+        //Delete appointment
         public static void deleteAppointment(int apptId)
         {
             string query = $"DELETE FROM appointment WHERE appointmentId={apptId.ToString()}";
@@ -108,6 +110,47 @@ namespace XufiScheduler
             c.Close();
         }
         
+        //Get customer ID / Name list for combobox
+        public static Dictionary<int,string> getCustomerDB()
+        {
+            string query = "SELECT customerId, customerName FROM customer";
+            MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
+            c.Open();
+            MySqlCommand cmd = new MySqlCommand(query, c);
+            Dictionary<int, string> customerList = new Dictionary<int, string>();
+            using (MySqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while(rdr.Read())
+                {
+                    customerList.Add(Convert.ToInt32(rdr[0]), rdr[1].ToString());
+                }
+                rdr.Close();
+            }
+            c.Close();
+
+            return customerList;
+        }
+        //Update Appointment details
+        static public void updateAppointment(int appointmentId, string title, string description, string location, string contact, string type, string url, string end, string start)
+        {
+            MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
+            c.Open();
+            DateTime dt = DateTime.Now;
+            MySqlCommand cmd = new MySqlCommand($"UPDATE appointment SET title='{title}', description='{description}', location='{location}',contact='{contact}',type='{type}',url='{url}',start='{start}', end='{end}', lastUpdateBy='{getCurrentUserName()}', lastUpdate='{dt.ToString("yyyy-MM-dd HH:mm:ss")}' WHERE appointmentId={appointmentId}", c);
+            cmd.ExecuteNonQuery();
+        }
+        //Update Customer details
+        static public void updateCustomer(int customerId, string customerName, string address, string address2, string city, string country, string zip, string phone, int active)
+        {
+            MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
+            c.Open();
+            int addressId = addAddress(address, address2, city, country, zip, phone);
+            DateTime dt = DateTime.Now;
+            MySqlCommand cmd = new MySqlCommand($"UPDATE customer SET customerName='{customerName}', addressId={addressId}, active={active}, lastUpdateBy='{getCurrentUserName()}', lastUpdate='{dt.ToString("yyyy-MM-dd HH:mm:ss")}' WHERE customerId={customerId}", c);
+            cmd.ExecuteNonQuery();
+        }
+
+        //Get customer details
         public static Dictionary<string, string> getCustomerDetails(int customerId)
         {
             string query = $"SELECT * FROM customer WHERE customerId={customerId.ToString()}";
@@ -167,43 +210,7 @@ namespace XufiScheduler
             c.Close();
             return customerInfo;
         }
-        public static Dictionary<int,string> getCustomerDB()
-        {
-            string query = "SELECT customerId, customerName FROM customer";
-            MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
-            c.Open();
-            MySqlCommand cmd = new MySqlCommand(query, c);
-            Dictionary<int, string> customerList = new Dictionary<int, string>();
-            using (MySqlDataReader rdr = cmd.ExecuteReader())
-            {
-                while(rdr.Read())
-                {
-                    customerList.Add(Convert.ToInt32(rdr[0]), rdr[1].ToString());
-                }
-                rdr.Close();
-            }
-            c.Close();
-
-            return customerList;
-        }
-        
-        static public void updateAppointment(int appointmentId, string title, string description, string location, string contact, string type, string url, string end, string start)
-        {
-            MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
-            c.Open();
-            DateTime dt = DateTime.Now;
-            MySqlCommand cmd = new MySqlCommand($"UPDATE appointment SET title='{title}', description='{description}', location='{location}',contact='{contact}',type='{type}',url='{url}',start='{start}', end='{end}', lastUpdateBy='{getCurrentUserName()}', lastUpdate='{dt.ToString("yyyy-MM-dd HH:mm:ss")}' WHERE appointmentId={appointmentId}", c);
-            cmd.ExecuteNonQuery();
-        }
-        static public void updateCustomer(int customerId, string customerName, string address, string address2, string city, string country, string zip, string phone, int active)
-        {
-            MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
-            c.Open();
-            int addressId = addAddress(address, address2, city, country, zip, phone);
-            DateTime dt = DateTime.Now;
-            MySqlCommand cmd = new MySqlCommand($"UPDATE customer SET customerName='{customerName}', addressId={addressId}, active={active}, lastUpdateBy='{getCurrentUserName()}', lastUpdate='{dt.ToString("yyyy-MM-dd HH:mm:ss")}' WHERE customerId={customerId}", c);
-            cmd.ExecuteNonQuery();
-        }
+        //Get appointment Details
         static public Dictionary<string, string> getAppointmentDetails(int appointmentId)
         {
             string query = $"SELECT * FROM appointment WHERE appointmentId = '{appointmentId}'";
@@ -231,25 +238,9 @@ namespace XufiScheduler
             c.Close();
             return appointmentDict;
         }
-        public static int createId(string table)
-        {
-            MySqlConnection con = new MySqlConnection(connectstring);
-            con.Open();
-            MySqlCommand cmd = new MySqlCommand($"SELECT {table + "Id"} FROM {table}", con);
-            MySqlDataReader rdr = cmd.ExecuteReader();
-            List<int> ids = new List<int>();
-            while (rdr.Read())
-            {
-                ids.Add(Convert.ToInt32(rdr[0]));
-            }
-            rdr.Close();
-            con.Close();
-            return newId(ids);
-        }
 
         public static int getNumAppts(string date)
         {
-            int numAppts = 0;
             MySqlConnection con = new MySqlConnection(connectstring);
             con.Open();
             MySqlCommand cmd = new MySqlCommand($"SELECT COUNT(*) FROM appointment WHERE DATE(start) = DATE('{date}')", con);
