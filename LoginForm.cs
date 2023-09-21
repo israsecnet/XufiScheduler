@@ -31,7 +31,7 @@ namespace XufiScheduler
             List<Appointment> aplist = DataPipe.getDailyAppts(dt.ToString("yyyy-MM-dd"));
             foreach (Appointment ap in aplist)
             {
-                if (ap.start < dt.AddMinutes(15))
+                if (ap.start < dt.AddMinutes(15) && ap.start > dt)
                 {
                     reminderLaunch(ap.customerId.ToString(), ap.start.ToString());
                 }
