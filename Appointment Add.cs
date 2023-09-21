@@ -58,11 +58,11 @@ namespace XufiScheduler
         {
             if (comboBox1.Enabled == true)
             {
-                bool result = DataPipe.addAppointment(Convert.ToInt32(comboBox1.Text), textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, dateTimePicker1.Value.ToString("yyyy-MM-dd HH:mm:ss"), dateTimePicker2.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                bool result = DataPipe.addAppointment(Convert.ToInt32(comboBox1.Text), textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, dateTimePicker2.Value.ToString("yyyy-MM-dd HH:mm:ss"), dateTimePicker1.Value.ToString("yyyy-MM-dd HH:mm:ss"));
             }
             else
             {
-                DataPipe.updateAppointment(apptId, textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, dateTimePicker1.Value.ToString("yyyy-MM-dd HH:mm:ss"), dateTimePicker2.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                DataPipe.updateAppointment(apptId, textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, dateTimePicker2.Value.ToString("yyyy-MM-dd HH:mm:ss"), dateTimePicker1.Value.ToString("yyyy-MM-dd HH:mm:ss"));
             }
                 this.Close();
         }

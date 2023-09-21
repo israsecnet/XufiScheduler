@@ -347,8 +347,8 @@ namespace XufiScheduler
                 }
                 else
                 {
-                    string start1 = start;
-                    string end1 = end;
+                    string start1 = DateTime.Parse(start).ToUniversalTime().ToString();
+                    string end1 = DateTime.Parse(end).ToUniversalTime().ToString();
                 }
                 cmd = new MySqlCommand($"INSERT INTO appointment VALUES ({newId},{customerId},{DataPipe.getCurrentUserId()},'{title}','{description}','{location}','{contact}','{type}', '{url}', '{start}','{end}', '{dt.ToString("yyyy-MM-dd HH:mm:ss")}', '{getCurrentUserName()}', '{dt.ToString("yyyy-MM-dd HH:mm:ss")}', '{getCurrentUserName()}')", con);
                 cmd.ExecuteNonQuery();
