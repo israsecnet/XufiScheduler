@@ -38,6 +38,12 @@ namespace XufiScheduler
             string datestring = year2.ToString() + "-" + month2.ToString() + "-" + numday2.ToString();
             List<Appointment> daylist = DataPipe.getDailyAppts(datestring);
             dataGridView1.DataSource = daylist.ToArray();
+            dataGridView1.SelectionMode= DataGridViewSelectionMode.FullRowSelect;
+            dataGridView1.Columns[0].HeaderCell.Value = "Customer ID";
+            dataGridView1.Columns[1].HeaderCell.Value = "Title";
+            dataGridView1.Columns[2].HeaderCell.Value = "Start";
+
+
         }
     }
 }
