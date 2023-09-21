@@ -37,7 +37,9 @@ namespace XufiScheduler
         {
             string datestring = year2.ToString() + "-" + month2.ToString() + "-" + numday2.ToString();
             List<Appointment> daylist = DataPipe.getDailyAppts(datestring);
-            dataGridView1.DataSource = daylist.ToArray();
+            var datasrc = daylist.Select(x => new { custid = x.customerId, title = x.title, start = x.start }).ToList();
+            //Lambda used for converting data into readable data source
+            dataGridView1.DataSource = datasrc;
             dataGridView1.SelectionMode= DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Columns[0].HeaderCell.Value = "Customer ID";
             dataGridView1.Columns[1].HeaderCell.Value = "Title";

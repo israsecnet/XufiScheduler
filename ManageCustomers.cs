@@ -25,6 +25,7 @@ namespace XufiScheduler
             customerGrid.Refresh();
             var customerdb = DataPipe.getCustomerDB();
             var tmpdb = from row in customerdb select new { customerId = row.Key, customerName = row.Value };
+            //Lambda used to convert into usable data source
             customerGrid.DataSource = tmpdb.ToArray();
             customerGrid.Columns[0].HeaderCell.Value = "Customer ID";
             customerGrid.Columns[1].HeaderCell.Value = "Customer Name";

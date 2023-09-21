@@ -85,8 +85,8 @@ namespace XufiScheduler
                     }
                     else
                     {
-                        tmp.start = DateTime.Parse(Convert.ToString(rdr[9]));
-                        tmp.end = DateTime.Parse(Convert.ToString(rdr[10]));
+                        tmp.start = DateTime.Parse(Convert.ToString(rdr[9])).ToUniversalTime();
+                        tmp.end = DateTime.Parse(Convert.ToString(rdr[10])).ToUniversalTime();
                     }
                     
 
@@ -154,8 +154,8 @@ namespace XufiScheduler
             }
             else
             {
-                end1 = end;
-                start1 = start;
+                end1 = DateTime.Parse(end).ToLocalTime().ToString();
+                start1 = DateTime.Parse(start).ToLocalTime().ToString();
             }
             
             MySqlCommand cmd = new MySqlCommand($"UPDATE appointment SET title='{title}', description='{description}', location='{location}',contact='{contact}',type='{type}',url='{url}',start='{start1}', end='{end1}', lastUpdateBy='{getCurrentUserName()}', lastUpdate='{dt.ToString("yyyy-MM-dd HH:mm:ss")}' WHERE appointmentId={appointmentId}", c);

@@ -31,7 +31,7 @@ namespace XufiScheduler
             textBox1.Text = tmpdata["country"].ToString();
             textBox7.Text = tmpdata["zip"].ToString();
             textBox8.Text = tmpdata["phone"].ToString();
-            if (tmpdata["active"] == "1")
+            if (tmpdata["active"].ToString() == "True")
             {
                 radioButton1.Checked = true;
             }
