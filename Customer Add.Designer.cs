@@ -30,6 +30,8 @@
         {
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.textBox8 = new System.Windows.Forms.TextBox();
@@ -47,8 +49,6 @@
             this.panel5 = new System.Windows.Forms.Panel();
             this.cancelButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -89,10 +89,27 @@
             this.panel4.Size = new System.Drawing.Size(514, 212);
             this.panel4.TabIndex = 23;
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(74, 112);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(377, 20);
+            this.textBox1.TabIndex = 27;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(4, 115);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(43, 13);
+            this.label1.TabIndex = 26;
+            this.label1.Text = "Country";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(267, 183);
+            this.radioButton2.Location = new System.Drawing.Point(267, 186);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(67, 17);
             this.radioButton2.TabIndex = 25;
@@ -103,7 +120,7 @@
             // radioButton1
             // 
             this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(170, 183);
+            this.radioButton1.Location = new System.Drawing.Point(170, 186);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(55, 17);
             this.radioButton1.TabIndex = 24;
@@ -114,14 +131,14 @@
             // 
             // textBox8
             // 
-            this.textBox8.Location = new System.Drawing.Point(47, 157);
+            this.textBox8.Location = new System.Drawing.Point(48, 164);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(403, 20);
             this.textBox8.TabIndex = 19;
             // 
             // textBox7
             // 
-            this.textBox7.Location = new System.Drawing.Point(73, 131);
+            this.textBox7.Location = new System.Drawing.Point(74, 138);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(377, 20);
             this.textBox7.TabIndex = 18;
@@ -129,7 +146,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 134);
+            this.label7.Location = new System.Drawing.Point(4, 141);
             this.label7.Name = "label7";
             this.label7.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label7.Size = new System.Drawing.Size(64, 13);
@@ -138,7 +155,7 @@
             // 
             // textBox6
             // 
-            this.textBox6.Location = new System.Drawing.Point(33, 83);
+            this.textBox6.Location = new System.Drawing.Point(34, 86);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(417, 20);
             this.textBox6.TabIndex = 17;
@@ -146,7 +163,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 86);
+            this.label6.Location = new System.Drawing.Point(4, 89);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(24, 13);
             this.label6.TabIndex = 5;
@@ -155,7 +172,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(3, 160);
+            this.label8.Location = new System.Drawing.Point(4, 167);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(38, 13);
             this.label8.TabIndex = 7;
@@ -237,23 +254,6 @@
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 108);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 13);
-            this.label1.TabIndex = 26;
-            this.label1.Text = "Country";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(73, 105);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(377, 20);
-            this.textBox1.TabIndex = 27;
             // 
             // CustomerAdd
             // 

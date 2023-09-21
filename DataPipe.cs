@@ -187,6 +187,23 @@ namespace XufiScheduler
             return customerList;
         }
         
+        static public void updateAppointment(int appointmentId, string title, string description, string location, string contact, string type, string url, string end, string start)
+        {
+            MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
+            c.Open();
+            DateTime dt = DateTime.Now;
+            MySqlCommand cmd = new MySqlCommand($"UPDATE appointment SET title='{title}', description='{description}', location='{location}',contact='{contact}',type='{type}',url='{url}',start='{start}', end='{end}', lastUpdateBy='{getCurrentUserName()}', lastUpdate='{dt.ToString("yyyy-MM-dd HH:mm:ss")}' WHERE appointmentId={appointmentId}", c);
+            cmd.ExecuteNonQuery();
+        }
+        static public void updateCustomer(int customerId, string customerName, string address, string address2, string city, string country, string zip, string phone, int active)
+        {
+            MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
+            c.Open();
+            int addressId = addAddress(address, address2, city, country, zip, phone);
+            DateTime dt = DateTime.Now;
+            MySqlCommand cmd = new MySqlCommand($"UPDATE customer SET customerName='{customerName}', addressId={addressId}, active={active}, lastUpdateBy='{getCurrentUserName()}', lastUpdate='{dt.ToString("yyyy-MM-dd HH:mm:ss")}' WHERE customerId={customerId}", c);
+            cmd.ExecuteNonQuery();
+        }
         static public Dictionary<string, string> getAppointmentDetails(int appointmentId)
         {
             string query = $"SELECT * FROM appointment WHERE appointmentId = '{appointmentId}'";
@@ -235,16 +252,48 @@ namespace XufiScheduler
             int numAppts = 0;
             MySqlConnection con = new MySqlConnection(connectstring);
             con.Open();
-            MySqlCommand cmd = new MySqlCommand($"SELECT COUNT(*) FROM appointment WHERE start LIKE '{date}'", con);
+            MySqlCommand cmd = new MySqlCommand($"SELECT COUNT(*) FROM appointment WHERE DATE(start) = DATE('{date}')", con);
+            int tmpnum = Convert.ToInt32(cmd.ExecuteScalar());
+            return tmpnum;
+        }
+
+        public static bool addAppointment(int customerId, string title, string description, string location, string contact, string type, string url, string start, string end)
+        {
+            bool result = false;
+            bool overlap = false;
+            DateTime startDate = DateTime.Parse(start);
+            string start_date = startDate.ToString("yyyy-MM-DD");
+            MySqlConnection con = new MySqlConnection(connectstring);
+            con.Open();
+            //Find all appointments on same day, look at start time and end time for overlap
+            MySqlCommand cmd = new MySqlCommand($"SELECT start, end FROM appointment WHERE start LIKE '{start_date}'", con);
             using (MySqlDataReader rdr = cmd.ExecuteReader())
             {
                 while (rdr.Read())
                 {
-                    numAppts = Convert.ToInt32(rdr[0]);
+                    DateTime tmpstart = DateTime.Parse(rdr[0].ToString());
+                    DateTime tmpend = DateTime.Parse(rdr[1].ToString());
+                    DateTime curstart = DateTime.Parse(start);
+                    DateTime curend = DateTime.Parse(end);
+                    if (curstart < tmpend && tmpstart < curend)
+                    {
+                        overlap = true;
+                    }
                 }
                 rdr.Close();
             }
-                return numAppts;
+            if (!overlap)
+            {
+                cmd = new MySqlCommand($"SELECT appointmentId FROM appointment ORDER BY appointmentId DESC LIMIT 1", con);
+                int newId = Convert.ToInt32(cmd.ExecuteScalar());
+                newId++;
+                DateTime dt = DateTime.Now;
+                cmd = new MySqlCommand($"INSERT INTO appointment VALUES ({newId},{customerId},{DataPipe.getCurrentUserId()},'{title}','{description}','{location}','{contact}','{type}', '{url}', '{start}','{end}', '{dt.ToString("yyyy-MM-dd HH:mm:ss")}', '{getCurrentUserName()}', '{dt.ToString("yyyy-MM-dd HH:mm:ss")}', '{getCurrentUserName()}')", con);
+                cmd.ExecuteNonQuery();
+                result = true;
+            }
+            
+            return result;
         }
         public static bool addCustomer(string customerName, string address, string address2, string city, string country, string zip, string phone, int active)
         {
@@ -280,7 +329,7 @@ namespace XufiScheduler
             var count = cmd.ExecuteScalar();
             if (Convert.ToInt32(count) > 0)
             {
-                cmd = new MySqlCommand($"SELECT addressId FROM address WHERE (address='{address}') AND (city='{city}') AND (postalCode='{zip}') AND (phone='{phone}')", con);
+                cmd = new MySqlCommand($"SELECT addressId FROM address WHERE (address='{address}') AND (cityid={cityId}) AND (postalCode='{zip}') AND (phone='{phone}')", con);
                 using (MySqlDataReader rdr = cmd.ExecuteReader())
                 {
                     while (rdr.Read())

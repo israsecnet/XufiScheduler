@@ -17,8 +17,11 @@ namespace XufiScheduler
             InitializeComponent();
         }
 
+        public int custId;
         public CustomerAdd(int customerId)
         {
+            custId = customerId;
+            this.Text = "Modify Customer";
             InitializeComponent();
             Dictionary<string, string> tmpdata = DataPipe.getCustomerDetails(customerId);
             textBox3.Text = tmpdata["customerName"].ToString();
@@ -85,19 +88,38 @@ namespace XufiScheduler
             string timestamp = DateTime.Now.ToString("u");
             string userName = DataPipe.getCurrentUserName();
             
-            bool completeForm = CustomerAdd.detailCheck(textBox3.Text, textBox4.Text, textBox6.Text, textBox7.Text, textBox8.Text);
-            if (completeForm && (radioButton1.Checked || radioButton2.Checked))
+            if (this.Text == "Add Customer")
             {
-                if (radioButton1.Checked)
+                bool completeForm = CustomerAdd.detailCheck(textBox3.Text, textBox4.Text, textBox6.Text, textBox7.Text, textBox8.Text);
+                if (completeForm && (radioButton1.Checked || radioButton2.Checked))
                 {
-                    DataPipe.addCustomer(textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox1.Text, textBox7.Text, textBox8.Text, 1);
+                    if (radioButton1.Checked)
+                    {
+                        DataPipe.addCustomer(textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox1.Text, textBox7.Text, textBox8.Text, 1);
+                    }
+                    else
+                    {
+                        DataPipe.addCustomer(textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox1.Text, textBox7.Text, textBox8.Text, 0);
+                    }
                 }
-                else
-                {
-                    DataPipe.addCustomer(textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox1.Text, textBox7.Text, textBox8.Text, 0);
-                }
-                this.Close();
             }
+            else
+            {
+                bool completeForm = CustomerAdd.detailCheck(textBox3.Text, textBox4.Text, textBox6.Text, textBox7.Text, textBox8.Text);
+                if (completeForm && (radioButton1.Checked || radioButton2.Checked))
+                {
+                    if (radioButton1.Checked)
+                    {
+                        DataPipe.updateCustomer(custId, textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox1.Text, textBox7.Text, textBox8.Text, 1);
+                    }
+                    else
+                    {
+                        DataPipe.updateCustomer(custId, textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox1.Text, textBox7.Text, textBox8.Text, 0);
+                    }
+                }
+            }
+            this.Close();
+            
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)

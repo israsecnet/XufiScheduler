@@ -52,6 +52,7 @@ namespace XufiScheduler
                 DayControlUser UIDay = new DayControlUser();
                 UIDay.days(i);
                 tmpdate.AddDays(1);
+                Console.WriteLine(DataPipe.getNumAppts(tmpdate.ToString("yyyy-MM-dd")));
                 UIDay.appts(DataPipe.getNumAppts(tmpdate.ToString("yyyy-MM-dd")));
                 flowLayoutPanel1.Controls.Add(UIDay);
             }

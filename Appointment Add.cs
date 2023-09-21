@@ -17,14 +17,27 @@ namespace XufiScheduler
             InitializeComponent();
             var customerdb = DataPipe.getCustomerDB();
             var tmpdb = from row in customerdb select new { customerId = row.Key, customerName = row.Value };
-            comboBox1.DataSource = tmpdb.ToArray();
+            List<int> idList = customerdb.Keys.ToList();
+            comboBox1.DataSource = idList;
+            dateTimePicker1.Format = DateTimePickerFormat.Custom;
+            dateTimePicker2.Format = DateTimePickerFormat.Custom;
+            dateTimePicker1.CustomFormat = "yyyy-MM-dd HH:mm:ss";
+            dateTimePicker2.CustomFormat = "yyyy-MM-dd HH:mm:ss";
         }
+        public static int apptId;
         public ApptAdd(int appointmentId)
         {
             InitializeComponent();
+            dateTimePicker1.Format = DateTimePickerFormat.Custom;
+            dateTimePicker2.Format = DateTimePickerFormat.Custom;
+            dateTimePicker1.CustomFormat = "yyyy-MM-dd HH:mm:ss";
+            dateTimePicker2.CustomFormat = "yyyy-MM-dd HH:mm:ss";
+            apptId = appointmentId;
+            comboBox1.Enabled = false;
             var customerdb = DataPipe.getCustomerDB();
             var tmpdb = from row in customerdb select new { customerId = row.Key, customerName = row.Value };
-            comboBox1.DataSource = tmpdb.ToArray();
+            List<int> idList = customerdb.Keys.ToList();
+            comboBox1.DataSource = idList;
             Dictionary<string, string>tmpdata = DataPipe.getAppointmentDetails(appointmentId);
             textBox3.Text = tmpdata["title"].ToString();
             textBox4.Text = tmpdata["description"].ToString();
@@ -43,7 +56,15 @@ namespace XufiScheduler
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            
+            if (comboBox1.Enabled == true)
+            {
+                bool result = DataPipe.addAppointment(Convert.ToInt32(comboBox1.Text), textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, dateTimePicker1.Value.ToString("yyyy-MM-dd HH:mm:ss"), dateTimePicker2.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+            }
+            else
+            {
+                DataPipe.updateAppointment(apptId, textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, dateTimePicker1.Value.ToString("yyyy-MM-dd HH:mm:ss"), dateTimePicker2.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+            }
+                this.Close();
         }
     }
 }

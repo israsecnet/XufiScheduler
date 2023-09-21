@@ -21,6 +21,8 @@ namespace XufiScheduler
 
         public void populateTable()
         {
+            customerGrid.Rows.Clear();
+            customerGrid.Refresh();
             var customerdb = DataPipe.getCustomerDB();
             var tmpdb = from row in customerdb select new { customerId = row.Key, customerName = row.Value };
             customerGrid.DataSource = tmpdb.ToArray();
