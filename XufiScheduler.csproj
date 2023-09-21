@@ -149,11 +149,23 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UIBlank2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIBlank2.Designer.cs">
+      <DependentUpon>UIBlank2.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControlBlank.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UserControlBlank.Designer.cs">
       <DependentUpon>UserControlBlank.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WeekUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WeekUserControl.Designer.cs">
+      <DependentUpon>WeekUserControl.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Appointment Add.resx">
       <DependentUpon>Appointment Add.cs</DependentUpon>
@@ -185,8 +197,14 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UIBlank2.resx">
+      <DependentUpon>UIBlank2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControlBlank.resx">
       <DependentUpon>UserControlBlank.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WeekUserControl.resx">
+      <DependentUpon>WeekUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

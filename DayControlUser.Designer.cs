@@ -75,6 +75,7 @@ namespace XufiScheduler
             this.Controls.Add(this.dayNumber);
             this.Name = "DayControlUser";
             this.Size = new System.Drawing.Size(150, 81);
+            this.Load += new System.EventHandler(this.DayControlUser_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

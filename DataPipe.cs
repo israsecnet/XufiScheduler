@@ -248,6 +248,28 @@ namespace XufiScheduler
             return tmpnum;
         }
 
+        public static List<Appointment> getDailyAppts(string date)
+        {
+            List<Appointment> appointmentList = new List<Appointment>();
+            MySqlConnection con = new MySqlConnection(connectstring);
+            con.Open();
+            MySqlCommand cmd = new MySqlCommand($"SELECT customerId, title, start FROM appointment WHERE DATE(start) = DATE('{date}')", con);
+            using (MySqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                    Appointment appointment = new Appointment();
+                    appointment.customerId = Convert.ToInt32(rdr[0]);
+                    appointment.title = rdr[1].ToString();
+                    appointment.start = DateTime.Parse(rdr[2].ToString());
+                    appointmentList.Add(appointment);
+                }
+                rdr.Close();
+            }
+            con.Close();
+            return appointmentList;
+        }
+
         public static bool addAppointment(int customerId, string title, string description, string location, string contact, string type, string url, string start, string end)
         {
             bool result = false;

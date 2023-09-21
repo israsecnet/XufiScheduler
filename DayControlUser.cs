@@ -26,5 +26,10 @@ namespace XufiScheduler
         {
             label2.Text = numAppts +"";
         }
+
+        private void DayControlUser_Load(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
