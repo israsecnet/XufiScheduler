@@ -26,6 +26,17 @@ namespace XufiScheduler
                 button1.Text = "Iniciar sesión";
                 errMsg = "El nombre de usuario y la contraseña no coinciden.";
             }
+
+            DateTime dt = DateTime.Now;
+            List<Appointment> aplist = DataPipe.getDailyAppts(dt.ToString("yyyy-MM-dd"));
+            foreach (Appointment ap in aplist)
+            {
+                if (ap.start < dt.AddMinutes(15))
+                {
+                    reminderLaunch(ap.customerId.ToString(), ap.start.ToString());
+                }
+            }
+            //Get any appoinments, reminder
         }
         
         public static void reminderLaunch(string customerName, string apptTime)
