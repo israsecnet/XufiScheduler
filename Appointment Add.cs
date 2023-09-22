@@ -21,8 +21,8 @@ namespace XufiScheduler
             comboBox1.DataSource = idList;
             dateTimePicker1.Format = DateTimePickerFormat.Custom;
             dateTimePicker2.Format = DateTimePickerFormat.Custom;
-            dateTimePicker1.CustomFormat = "yyyy-MM-dd HH:mm:ss";
-            dateTimePicker2.CustomFormat = "yyyy-MM-dd HH:mm:ss";
+            dateTimePicker1.CustomFormat = "yyyy-MM-dd HH:mm";
+            dateTimePicker2.CustomFormat = "yyyy-MM-dd HH:mm";
         }
         public static int apptId;
         public ApptAdd(int appointmentId)
@@ -30,8 +30,8 @@ namespace XufiScheduler
             InitializeComponent();
             dateTimePicker1.Format = DateTimePickerFormat.Custom;
             dateTimePicker2.Format = DateTimePickerFormat.Custom;
-            dateTimePicker1.CustomFormat = "yyyy-MM-dd HH:mm:ss";
-            dateTimePicker2.CustomFormat = "yyyy-MM-dd HH:mm:ss";
+            dateTimePicker1.CustomFormat = "yyyy-MM-dd HH:mm";
+            dateTimePicker2.CustomFormat = "yyyy-MM-dd HH:mm";
             apptId = appointmentId;
             comboBox1.Enabled = false;
             var customerdb = DataPipe.getCustomerDB();

@@ -158,7 +158,6 @@ namespace XufiScheduler
             this.label1.Size = new System.Drawing.Size(81, 26);
             this.label1.TabIndex = 2;
             this.label1.Text = "Sunday";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
