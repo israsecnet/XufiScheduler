@@ -64,7 +64,7 @@ namespace XufiScheduler
             {
                 MainForm dashboard = new MainForm();
                 dashboard.loginForm = this;
-                Logger.writeUserLogin(DataPipe.getCurrentUserId());//Get Current User ID
+                Logger.login_log(DataPipe.getCurrentUserId());//Get Current User ID
                 dashboard.Show();
                 this.Hide();
                 DateTime dt = DateTime.Now;

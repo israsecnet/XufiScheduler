@@ -9,12 +9,11 @@ namespace XufiScheduler
 {
     public class Logger
     {
-        public static void writeUserLogin(int userId)
+        public static void login_log(int userId)
         {
-            string path = "log.text";
-            string log = $"User {userId} | LOGGED IN | {DateTime.Now.ToString("u")}" + Environment.NewLine;
-
-            File.AppendAllText(path, log);
+            string filepath = "log.text";
+            string msg = $"User {userId} | LOGGED IN | {DateTime.Now.ToString("u")}" + Environment.NewLine;
+            File.AppendAllText(filepath, msg);
         }
     }
 }

@@ -57,6 +57,24 @@ namespace XufiScheduler
             return max + 1;
         }
 
+        public static Dictionary<int, int> getApptTypes()
+        {
+            DateTime curdate = DateTime.Now;
+            MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
+            c.Open();
+            Dictionary<int, int> dret = new Dictionary<int, int>();
+            for (int i = 1; i < 13; i++)
+            {
+                int types = 0;
+                DateTime newd = new DateTime(curdate.Year, i, 1);
+                string query = $"SELECT DISTINCT COUNT(type) FROM appointment WHERE start LIKE '{curdate.Year.ToString()}-{newd.Month.ToString()}'";
+                MySqlCommand cmd = new MySqlCommand(query, c);
+                dret.Add(i, Convert.ToInt32(cmd.ExecuteScalar()));
+                
+            }
+            return dret;
+        }
+
         public static List<Appointment> getappts()
         {
             string query = "SELECT * FROM appointment";
