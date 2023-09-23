@@ -20,7 +20,8 @@ namespace XufiScheduler
         public void fill_schedule(int userid, double hours)
         {
             label1.Text = "User ID " + userid.ToString() + " - Total hours booked:";
-            label2.Text = Convert.ToInt32(hours).ToString();
+            
+            label2.Text = Math.Round(hours, 1).ToString();
         }
     }
 }

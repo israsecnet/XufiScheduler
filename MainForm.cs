@@ -30,6 +30,9 @@ namespace XufiScheduler
         }
         private void MainForm_Load(object sender, EventArgs e)
         {
+            DateTime dt = DateTime.Now;
+            month = dt.Month;
+            year = dt.Year;
             displayDays();
         }
 
@@ -39,8 +42,7 @@ namespace XufiScheduler
             {
                 flowLayoutPanel1.Controls.Clear();
 
-                DateTime today = DateTime.Now;
-                String monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(today.Month);
+                String monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(month);
                 monthLabel.Text = monthName + " " + year;
                 DateTime startMonth = new DateTime(year, month, 1);
                 weekPointer = startMonth;
@@ -101,9 +103,7 @@ namespace XufiScheduler
         private void displayDays()
         {
             flowLayoutPanel1.Controls.Clear();
-            DateTime dt = DateTime.Now;
-            month = dt.Month;
-            year = dt.Year;
+            
             string datestring;
             String monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(month);
             monthLabel.Text = monthName + " " + year;
