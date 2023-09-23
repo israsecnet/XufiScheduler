@@ -63,13 +63,15 @@ namespace XufiScheduler
             MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
             c.Open();
             Dictionary<int, int> dret = new Dictionary<int, int>();
+            DateTime newd = new DateTime(curdate.Year, 1, 1);
+            string datestring;
             for (int i = 1; i < 13; i++)
             {
-                int types = 0;
-                DateTime newd = new DateTime(curdate.Year, i, 1);
-                string query = $"SELECT DISTINCT COUNT(type) FROM appointment WHERE start LIKE '{curdate.Year.ToString()}-{newd.Month.ToString()}'";
-                MySqlCommand cmd = new MySqlCommand(query, c);
-                dret.Add(i, Convert.ToInt32(cmd.ExecuteScalar()));
+                datestring = newd.ToString("yyyy-MM-dd");
+                MySqlCommand cmd = new MySqlCommand($"SELECT DISTINCT COUNT(type) FROM appointment WHERE MONTH(start) = MONTH('{datestring}')", c);
+                int types = Convert.ToInt32(cmd.ExecuteScalar());
+                dret.Add(i, types);
+                newd = newd.AddMonths(1);
                 
             }
             return dret;
