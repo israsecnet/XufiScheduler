@@ -204,13 +204,13 @@ namespace XufiScheduler
             string end1, start1;
             if (est)
             {
-                end1 = DateTime.Parse(end).ToUniversalTime().ToString();
-                start1 = DateTime.Parse(start).ToUniversalTime().ToString();
+                end1 = DateTime.Parse(end).ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss");
+                start1 = DateTime.Parse(start).ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss");
             }
             else
             {
-                end1 = DateTime.Parse(end).ToLocalTime().ToString();
-                start1 = DateTime.Parse(start).ToLocalTime().ToString();
+                end1 = DateTime.Parse(end).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
+                start1 = DateTime.Parse(start).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
             }
             
             MySqlCommand cmd = new MySqlCommand($"UPDATE appointment SET title='{title}', description='{description}', location='{location}',contact='{contact}',type='{type}',url='{url}',start='{start1}', end='{end1}', lastUpdateBy='{getCurrentUserName()}', lastUpdate='{dt.ToString("yyyy-MM-dd HH:mm:ss")}' WHERE appointmentId={appointmentId}", c);
