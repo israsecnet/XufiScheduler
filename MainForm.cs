@@ -118,7 +118,7 @@ namespace XufiScheduler
                 flowLayoutPanel1.Controls.Add(UIBlank);
             }
             DateTime tmpdate = startMonth;
-            for (int i = 1; i < days; i++)
+            for (int i = 1; i < days + 1; i++)
             {
                 DayControlUser UIDay = new DayControlUser();
                 UIDay.days(i);
@@ -135,51 +135,46 @@ namespace XufiScheduler
             flowLayoutPanel1.Controls.Clear();
 
             string datestring;
-            DateTime startMonth = new DateTime(year, month, 1);
-            int daysofweek = Convert.ToInt32(startMonth.DayOfWeek.ToString("d")) + 1;
-            int days = DateTime.DaysInMonth(year, month);
             int active = 1;
             int blank = 1;
 
-            if (weekPointer.Day == 1)
+            if (weekToggle)
             {
-                
-                if (month == 1)
+                DateTime startMonth = new DateTime(year, month, 1);
+                int daysofweek = Convert.ToInt32(startMonth.DayOfWeek.ToString("d")) + 1;
+                int days = DateTime.DaysInMonth(year, month);
+                if (weekPointer.Day == 1)
                 {
-                    month = 12;
-                    year--;
+
+                    if (month == 1)
+                    {
+                        month = 12;
+                        year--;
+                    }
+                    else
+                    {
+                        month--;
+                    }
+
+                    startMonth = new DateTime(year, month, 1);
+                    days = DateTime.DaysInMonth(year, month);
+                    daysofweek = Convert.ToInt32(startMonth.DayOfWeek.ToString("d")) + 1;
+                    DateTime tmpdays = new DateTime(year, month, days);
+                    while (tmpdays.DayOfWeek != DayOfWeek.Sunday)
+                    {
+                        tmpdays = tmpdays.AddDays(-1);
+                    }
+                    weekPointer = tmpdays;
+                }
+                else if (weekPointer.AddDays(-7).Month != weekPointer.Month)
+                {
+                    weekPointer = new DateTime(year, month, 1);
                 }
                 else
                 {
-                    month--;
+                    weekPointer = weekPointer.AddDays(-7);
+
                 }
-                
-                startMonth = new DateTime(year, month, 1);
-                days = DateTime.DaysInMonth(year, month);
-                daysofweek = Convert.ToInt32(startMonth.DayOfWeek.ToString("d")) + 1;
-                DateTime tmpdays = new DateTime(year, month, days);
-                while (tmpdays.DayOfWeek != DayOfWeek.Sunday)
-                {
-                    tmpdays = tmpdays.AddDays(-1);
-                }
-                weekPointer = tmpdays;
-            }
-            else if (weekPointer.AddDays(-7).Month != weekPointer.Month)
-            {
-                weekPointer = new DateTime(year, month, 1);
-            }
-            else
-            {
-                weekPointer = weekPointer.AddDays(-7);
-
-            }
-
-            String monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(month);
-            monthLabel.Text = monthName + " " + year;
-            
-
-            if (weekToggle)
-            {
                 // if first of month and is not sunday
                 if (weekPointer.Day == 1 && weekPointer.DayOfWeek != DayOfWeek.Sunday)
                 {
@@ -210,6 +205,8 @@ namespace XufiScheduler
                     userControl.days(i, month, year);
                     flowLayoutPanel1.Controls.Add(userControl);
                 }
+                String monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(month);
+                monthLabel.Text = monthName + " " + year;
 
             }
             else
@@ -223,15 +220,17 @@ namespace XufiScheduler
                 {
                     month--;
                 }
-                monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(month);
+                int days = DateTime.DaysInMonth(year, month);
+                DateTime startMonth = new DateTime(year, month, 1);
+                int daysofweek = Convert.ToInt32(startMonth.DayOfWeek.ToString("d")) + 1;
+                String monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(month);
                 monthLabel.Text = monthName + " " + year;
                 for (int i = 1; i < daysofweek; i++)
                 {
                     UserControlBlank UIBlank = new UserControlBlank();
                     flowLayoutPanel1.Controls.Add(UIBlank);
                 }
-                DateTime tmpdate = startMonth;
-                for (int i = 1; i < days; i++)
+                for (int i = 1; i < days + 1; i++)
                 {
                     DayControlUser UIDay = new DayControlUser();
                     UIDay.days(i);
@@ -246,42 +245,40 @@ namespace XufiScheduler
         {
             flowLayoutPanel1.Controls.Clear();
             string datestring;
-            DateTime startMonth = new DateTime(year, month, 1);
-            int daysofweek = Convert.ToInt32(startMonth.DayOfWeek.ToString("d")) + 1;
             int active = 0;
             int blank = 0;
-
-            if (weekPointer.AddDays(7).Month != weekPointer.Month)
-            {
-                if (month == 12)
-                {
-                    month = 1;
-                    year++;
-                }
-                else
-                {
-                    month++;
-                }
-                weekPointer = new DateTime(year, month, 1);
-                startMonth = new DateTime(year, month, 1);
-                daysofweek = Convert.ToInt32(startMonth.DayOfWeek.ToString("d")) + 1;
-            }
-            else if (weekPointer.Day == 1)
-            {
-                weekPointer = weekPointer.AddDays(8 - daysofweek);
-            }
-            else
-            {
-                weekPointer = weekPointer.AddDays(7);
-                
-            }
-
-            String monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(month);
-            monthLabel.Text = monthName + " " + year;
-            int days = DateTime.DaysInMonth(year, month);
+            DateTime startMonth = new DateTime(year, month, 1);
+            
 
             if (weekToggle)
             {
+                int daysofweek = Convert.ToInt32(startMonth.DayOfWeek.ToString("d")) + 1;
+                
+                int days = DateTime.DaysInMonth(year, month);
+                if (weekPointer.AddDays(7).Month != weekPointer.Month)
+                {
+                    if (month == 12)
+                    {
+                        month = 1;
+                        year++;
+                    }
+                    else
+                    {
+                        month++;
+                    }
+                    weekPointer = new DateTime(year, month, 1);
+                    startMonth = new DateTime(year, month, 1);
+                    daysofweek = Convert.ToInt32(startMonth.DayOfWeek.ToString("d")) + 1;
+                }
+                else if (weekPointer.Day == 1)
+                {
+                    weekPointer = weekPointer.AddDays(8 - daysofweek);
+                }
+                else
+                {
+                    weekPointer = weekPointer.AddDays(7);
+
+                }
                 // if first of month and is not sunday
                 if (weekPointer.Day == 1 && weekPointer.DayOfWeek != DayOfWeek.Sunday)
                 {
@@ -312,6 +309,8 @@ namespace XufiScheduler
                     userControl.days(i, month, year);
                     flowLayoutPanel1.Controls.Add(userControl);
                 }
+                String monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(month);
+                monthLabel.Text = monthName + " " + year;
 
             }
             else
@@ -325,7 +324,10 @@ namespace XufiScheduler
                 {
                     month++;
                 }
-                monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(month);
+                int days = DateTime.DaysInMonth(year, month);
+                startMonth = new DateTime(year, month, 1);
+                int daysofweek = Convert.ToInt32(startMonth.DayOfWeek.ToString("d")) + 1;
+                String monthName = DateTimeFormatInfo.CurrentInfo.GetMonthName(month);
                 monthLabel.Text = monthName + " " + year;
                 for (int i = 1; i < daysofweek; i++)
                 {
@@ -333,7 +335,7 @@ namespace XufiScheduler
                     flowLayoutPanel1.Controls.Add(UIBlank);
                 }
                 DateTime tmpdate = startMonth;
-                for (int i = 1; i < days; i++)
+                for (int i = 1; i < days + 1; i++)
                 {
                     DayControlUser UIDay = new DayControlUser();
                     UIDay.days(i);
