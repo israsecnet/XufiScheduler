@@ -43,7 +43,7 @@ namespace XufiScheduler
         private void get_schedule(object sender, EventArgs e)
         {
             flowLayoutPanel1.Controls.Clear();
-            Dictionary<int, int> tmpDict = DataPipe.getConsultSchedule();
+            Dictionary<int, double> tmpDict = DataPipe.getConsultSchedule();
             for (int i = 1;i < tmpDict.Keys.Count + 1;i++) 
             {
                 consultScheduleUI consultUI = new consultScheduleUI();

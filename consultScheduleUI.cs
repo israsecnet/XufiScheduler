@@ -17,10 +17,10 @@ namespace XufiScheduler
             InitializeComponent();
         }
 
-        public void fill_schedule(int userid, int hours)
+        public void fill_schedule(int userid, double hours)
         {
             label1.Text = "User ID " + userid.ToString() + " - Total hours booked:";
-            label2.Text = hours.ToString();
+            label2.Text = Convert.ToInt32(hours).ToString();
         }
     }
 }

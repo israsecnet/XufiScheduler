@@ -46,7 +46,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(111, 9);
+            this.label2.Location = new System.Drawing.Point(315, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(46, 18);
             this.label2.TabIndex = 1;
@@ -56,10 +56,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.LightGray;
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "consultScheduleUI";
-            this.Size = new System.Drawing.Size(268, 37);
+            this.Size = new System.Drawing.Size(364, 37);
             this.ResumeLayout(false);
             this.PerformLayout();
 

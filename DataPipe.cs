@@ -56,14 +56,24 @@ namespace XufiScheduler
             }
             return max + 1;
         }
-        public static Dictionary<int, int> getConsultSchedule()
+        public static Dictionary<int, double> getConsultSchedule()
         {
             MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
             c.Open();
-            Dictionary<int, int> tmpDict = new Dictionary<int, int>();
-            MySqlCommand cmd = new MySqlCommand($"SELECT DISTINCT COUNT(userID) FROM appointment", c);
-            int totalIds = Convert.ToInt32(cmd.ExecuteScalar());
-            int diffHours = 0;
+            Dictionary<int, double> tmpDict = new Dictionary<int, double>();
+            MySqlCommand cmd = new MySqlCommand($"SELECT DISTINCT userID FROM appointment", c);
+            int totalIds = 0;
+            using (MySqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                    totalIds++;
+                }
+                rdr.Close();
+            }
+                   
+            double diffHours = 0;
+            DateTime tmp1,tmp2;
             for (int i = 1; i < totalIds + 1; i++)
             {
                 cmd = new MySqlCommand($"SELECT start, end FROM appointment WHERE userId={i.ToString()}", c);
@@ -71,7 +81,10 @@ namespace XufiScheduler
                 {
                     while (rdr.Read())
                     {
-                        diffHours += Convert.ToInt32(rdr[1]) - Convert.ToInt32(rdr[0]);
+                        tmp1 = DateTime.Parse(rdr[0].ToString());
+                        tmp2 = DateTime.Parse(rdr[1].ToString());
+                        double tmp3 = tmp2.Subtract(tmp1).TotalHours;
+                        diffHours += tmp3;
                     }
                     rdr.Close();
                 }
