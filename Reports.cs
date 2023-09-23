@@ -56,8 +56,8 @@ namespace XufiScheduler
         {
             flowLayoutPanel1.Controls.Clear();
             Dictionary<string, string> tmpDict = DataPipe.getCustomerNumbers();
-            List<string> lines = tmpDict.Select(x => x.Key + x.Value).ToList();
-            for (int i = 1; i < lines.Count + 1; i++)
+            List<string> lines = tmpDict.Select(x => x.Key + "  "+ x.Value).ToList();
+            for (int i = 0; i < lines.Count; i++)
             {
                 CustPhoneUI custPhoneUI = new CustPhoneUI();
                 custPhoneUI.populate(lines[i]);
