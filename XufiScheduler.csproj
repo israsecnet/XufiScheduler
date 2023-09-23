@@ -115,6 +115,12 @@
       <DependentUpon>consultScheduleUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Customer.cs" />
+    <Compile Include="CustPhoneUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustPhoneUI.Designer.cs">
+      <DependentUpon>CustPhoneUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataPipe.cs" />
     <Compile Include="DayControlUser.cs">
       <SubType>UserControl</SubType>
@@ -190,6 +196,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="consultScheduleUI.resx">
       <DependentUpon>consultScheduleUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustPhoneUI.resx">
+      <DependentUpon>CustPhoneUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DayControlUser.resx">
       <DependentUpon>DayControlUser.cs</DependentUpon>

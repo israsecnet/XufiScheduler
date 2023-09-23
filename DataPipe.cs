@@ -287,6 +287,24 @@ namespace XufiScheduler
             c.Close();
             return customerInfo;
         }
+        static public Dictionary<string, string> getCustomerNumbers()
+        {
+            Dictionary<string, string> tmpDict = new Dictionary<string, string>();
+            MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
+            c.Open();
+            string query = $"SELECT customerName, phone FROM customer c, address a WHERE c.addressId=a.addressId";
+            MySqlCommand cmd = new MySqlCommand(query, c);
+            using (MySqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                    tmpDict.Add(rdr[0].ToString(), rdr[1].ToString());
+                }
+                rdr.Close();
+            }
+            c.Close();
+            return tmpDict;
+        }
         //Get appointment Details
         static public Dictionary<string, string> getAppointmentDetails(int appointmentId)
         {

@@ -51,5 +51,18 @@ namespace XufiScheduler
                 flowLayoutPanel1.Controls.Add(consultUI);
             }
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            flowLayoutPanel1.Controls.Clear();
+            Dictionary<string, string> tmpDict = DataPipe.getCustomerNumbers();
+            List<string> lines = tmpDict.Select(x => x.Key + x.Value).ToList();
+            for (int i = 1; i < lines.Count + 1; i++)
+            {
+                CustPhoneUI custPhoneUI = new CustPhoneUI();
+                custPhoneUI.populate(lines[i]);
+                flowLayoutPanel1.Controls.Add(custPhoneUI);
+            }
+        }
     }
 }
