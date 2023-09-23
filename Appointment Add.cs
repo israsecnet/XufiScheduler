@@ -45,8 +45,8 @@ namespace XufiScheduler
             textBox6.Text = tmpdata["contact"].ToString();
             textBox7.Text = tmpdata["type"].ToString();
             textBox8.Text = tmpdata["url"].ToString();
-            dateTimePicker1.Value = DateTime.Parse(tmpdata["start"].ToString());
-            dateTimePicker2.Value = DateTime.Parse(tmpdata["end"].ToString());
+            dateTimePicker2.Value = DateTime.Parse(tmpdata["start"].ToString());
+            dateTimePicker1.Value = DateTime.Parse(tmpdata["end"].ToString());
 
         }
         private void cancelButton_Click(object sender, EventArgs e)
