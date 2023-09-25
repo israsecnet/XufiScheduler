@@ -56,17 +56,25 @@ namespace XufiScheduler
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            if (comboBox1.Enabled == true)
+            if(DataPipe.checkApptHours(dateTimePicker2.Value, dateTimePicker2.Value))
             {
-                bool result = DataPipe.addAppointment(Convert.ToInt32(comboBox1.Text), textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, dateTimePicker1.Value.ToString("yyyy-MM-dd HH:mm:ss"), dateTimePicker2.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                MessageBox.Show("Appointment outside business hours, please retry Monday - Friday between 9 - 5", "Save Error", MessageBoxButtons.OK);
             }
             else
             {
-                DataPipe.updateAppointment(apptId, textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, dateTimePicker1.Value.ToString("yyyy-MM-dd HH:mm:ss"), dateTimePicker2.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                if (comboBox1.Enabled == true)
+                {
+                    bool result = DataPipe.addAppointment(Convert.ToInt32(comboBox1.Text), textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, dateTimePicker1.Value.ToString("yyyy-MM-dd HH:mm:ss"), dateTimePicker2.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
+                else
+                {
+                    DataPipe.updateAppointment(apptId, textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, dateTimePicker1.Value.ToString("yyyy-MM-dd HH:mm:ss"), dateTimePicker2.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                }
+                ManageAppointments refreshView = (ManageAppointments)Application.OpenForms["ManageAppointments"];
+                refreshView.populate();
+                this.Close();
             }
-            ManageAppointments refreshView = (ManageAppointments)Application.OpenForms["ManageAppointments"];
-            refreshView.populate();
-            this.Close();
+            
         }
     }
 }

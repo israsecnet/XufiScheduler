@@ -39,22 +39,18 @@ namespace XufiScheduler
             currentUserName = curuser;
         }
 
-        public static void setAppts(Dictionary<int, Hashtable> tmpappts)
+        public static bool checkApptHours(DateTime start, DateTime end)
         {
-            appts = tmpappts;
-        }
-
-        public static int newId(List<int> idList)
-        {
-            int max = 0;
-            foreach(int id in idList)
+            bool outsideHours = false;
+            if (start.DayOfWeek == DayOfWeek.Saturday || start.DayOfWeek == DayOfWeek.Sunday || end.DayOfWeek == DayOfWeek.Saturday || end.DayOfWeek == DayOfWeek.Sunday)
             {
-                if (id > max)
-                {
-                    max = id;
-                }
+                outsideHours = true;
             }
-            return max + 1;
+            else if (start.Hour < 9 || start.Hour > 17 || end.Hour < 9 || end.Hour > 17)
+            {
+                outsideHours = true;
+            }
+            return outsideHours;
         }
         public static Dictionary<int, double> getConsultSchedule()
         {
