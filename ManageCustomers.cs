@@ -21,7 +21,7 @@ namespace XufiScheduler
 
         public void populateTable()
         {
-            customerGrid.Rows.Clear();
+            customerGrid.Controls.Clear();
             customerGrid.Refresh();
             var customerdb = DataPipe.getCustomerDB();
             var tmpdb = from row in customerdb select new { customerId = row.Key, customerName = row.Value };
@@ -64,6 +64,7 @@ namespace XufiScheduler
                     DataPipe.deleteCustomer(modId);
                 }
             }
+            populateTable();
         }
     }
 }

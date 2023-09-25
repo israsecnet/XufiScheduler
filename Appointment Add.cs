@@ -64,7 +64,9 @@ namespace XufiScheduler
             {
                 DataPipe.updateAppointment(apptId, textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, dateTimePicker1.Value.ToString("yyyy-MM-dd HH:mm:ss"), dateTimePicker2.Value.ToString("yyyy-MM-dd HH:mm:ss"));
             }
-                this.Close();
+            ManageAppointments refreshView = (ManageAppointments)Application.OpenForms["ManageAppointments"];
+            refreshView.populate();
+            this.Close();
         }
     }
 }

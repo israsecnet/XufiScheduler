@@ -12,9 +12,11 @@ namespace XufiScheduler
 {
     public partial class CustomerAdd : Form
     {
+        public static bool newcust;
         public CustomerAdd()
         {
             InitializeComponent();
+            newcust = true;
         }
 
         public int custId;
@@ -88,7 +90,7 @@ namespace XufiScheduler
             string timestamp = DateTime.Now.ToString("u");
             string userName = DataPipe.getCurrentUserName();
             
-            if (this.Text == "Add Customer")
+            if (newcust)
             {
                 bool completeForm = CustomerAdd.detailCheck(textBox3.Text, textBox4.Text, textBox6.Text, textBox7.Text, textBox8.Text);
                 if (completeForm && (radioButton1.Checked || radioButton2.Checked))
@@ -118,6 +120,8 @@ namespace XufiScheduler
                     }
                 }
             }
+            ManageCustomers refreshView = (ManageCustomers)Application.OpenForms["ManageCustomers"];
+            refreshView.populateTable();
             this.Close();
             
         }

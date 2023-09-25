@@ -15,10 +15,16 @@ namespace XufiScheduler
         public ManageAppointments()
         {
             InitializeComponent();
+            populate();
+
+        }
+
+        public void populate()
+        {
+            appointmentGrid.Controls.Clear();
             appointmentGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             List<Appointment> tmpdata = DataPipe.getappts();
             appointmentGrid.DataSource = tmpdata.Select(c => new { c.appointmentId, c.title, c.location, c.customerId, c.start }).ToList();
-
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -54,6 +60,7 @@ namespace XufiScheduler
                     DataPipe.deleteAppointment(modId);
                 }
             }
+            populate();
         }
     }
 }
