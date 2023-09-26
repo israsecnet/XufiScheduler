@@ -49,11 +49,11 @@
             // 
             this.button2.Location = new System.Drawing.Point(12, 386);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(156, 23);
+            this.button2.Size = new System.Drawing.Size(318, 23);
             this.button2.TabIndex = 1;
-            this.button2.Text = "Appointments by Month";
+            this.button2.Text = "Appointments Types by Month";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.appt_by_month);
+            this.button2.Click += new System.EventHandler(this.appt_type_by_month);
             // 
             // button3
             // 

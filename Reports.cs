@@ -26,7 +26,7 @@ namespace XufiScheduler
             this.Close();
         }
 
-        private void appt_by_month(object sender, EventArgs e)
+        private void appt_type_by_month(object sender, EventArgs e)
         {
             flowLayoutPanel1.Controls.Clear();
             Dictionary<int, int> dispData = DataPipe.getApptTypes();

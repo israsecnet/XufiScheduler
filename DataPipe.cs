@@ -56,7 +56,8 @@ namespace XufiScheduler
         {
             MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
             c.Open();
-            Dictionary<int, double> tmpDict = new Dictionary<int, double>();
+            Dictionary<int, List<Appointment>> tmpDict = new Dictionary<int, List<Appointment>>();
+            List<Appointment> tmpList = new List<Appointment>();
             MySqlCommand cmd = new MySqlCommand($"SELECT DISTINCT userID FROM appointment", c);
             int totalIds = 0;
             using (MySqlDataReader rdr = cmd.ExecuteReader())
@@ -77,6 +78,8 @@ namespace XufiScheduler
                 {
                     while (rdr.Read())
                     {
+                        Appointment appointment = new Appointment();
+                        appointment.start = 
                         tmp1 = DateTime.Parse(rdr[0].ToString());
                         tmp2 = DateTime.Parse(rdr[1].ToString());
                         double tmp3 = tmp2.Subtract(tmp1).TotalHours;
