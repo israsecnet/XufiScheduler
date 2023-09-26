@@ -42,15 +42,45 @@ namespace XufiScheduler
         public static bool checkApptHours(DateTime start, DateTime end)
         {
             bool outsideHours = false;
-            if (start.DayOfWeek == DayOfWeek.Saturday || start.DayOfWeek == DayOfWeek.Sunday || end.DayOfWeek == DayOfWeek.Saturday || end.DayOfWeek == DayOfWeek.Sunday)
+            bool overlap = false;
+            string start_date = start.ToString("yyyy-MM-dd");
+            MySqlConnection con = new MySqlConnection(connectstring);
+            con.Open();
+            //Find all appointments on same day, look at start time and end time for overlap
+            MySqlCommand cmd = new MySqlCommand($"SELECT start, end FROM appointment WHERE DATE(start) = DATE('{start_date}')", con);
+            using (MySqlDataReader rdr = cmd.ExecuteReader())
             {
-                outsideHours = true;
+                while (rdr.Read())
+                {
+                    DateTime tmpstart = DateTime.Parse(rdr[0].ToString());
+                    DateTime tmpend = DateTime.Parse(rdr[1].ToString());
+                    DateTime curstart = start;
+                    DateTime curend = end;
+                    if (curstart < tmpend && tmpstart < curend)
+                    {
+                        overlap = true;
+                    }
+                }
+                rdr.Close();
+                return overlap;
             }
-            else if (start.Hour < 9 || start.Hour > 17 || end.Hour < 9 || end.Hour > 17)
+            if (!overlap)
             {
-                outsideHours = true;
+                if (start.DayOfWeek == DayOfWeek.Saturday || start.DayOfWeek == DayOfWeek.Sunday || end.DayOfWeek == DayOfWeek.Saturday || end.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    outsideHours = true;
+                }
+                else if (start.Hour < 9 || start.Hour > 17 || end.Hour < 9 || end.Hour > 17)
+                {
+                    outsideHours = true;
+                }
+                return outsideHours;
             }
-            return outsideHours;
+            else
+            {
+                return false;
+            }
+            
         }
         public static Dictionary<int, double> getConsultSchedule()
         {
@@ -192,7 +222,7 @@ namespace XufiScheduler
             return customerList;
         }
         //Update Appointment details
-        static public void updateAppointment(int appointmentId, string title, string description, string location, string contact, string type, string url, string end, string start)
+        static public void updateAppointment(int appointmentId, string title, string description, string location, string contact, string type, string url, string start, string end)
         {
             MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
             c.Open();
