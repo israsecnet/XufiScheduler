@@ -296,9 +296,9 @@ namespace XufiScheduler
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(945, 661);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(29, 13);
+            this.label8.Size = new System.Drawing.Size(28, 13);
             this.label8.TabIndex = 16;
-            this.label8.Text = "UTC";
+            this.label8.Text = "EST";
             // 
             // MainForm
             // 

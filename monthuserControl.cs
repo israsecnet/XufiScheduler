@@ -31,7 +31,7 @@ namespace XufiScheduler
         {
             DateTime dt = new DateTime(2023, month, 1);
             label1.Text = dt.ToString("MMMM");
-            label2.Text = types.ToString();
+            label2.Text = "Types in month:" + types.ToString();
         }
     }
 }

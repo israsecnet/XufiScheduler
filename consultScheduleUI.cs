@@ -19,7 +19,7 @@ namespace XufiScheduler
 
         public void fill_schedule(int userid, List<Appointment> apptlist)
         {
-            label1.Text = "User ID " + userid.ToString() + " - Total hours booked:";
+            label1.Text = "User ID " + userid.ToString();
             dataGridView1.DataSource = apptlist.Select(c => new { c.customerId, c.title, c.description, c.contact, c.location, c.type, c.url, c.start, c.end }).ToList();
             
         }

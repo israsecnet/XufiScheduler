@@ -17,7 +17,7 @@ namespace XufiScheduler
         private static int currentUser;
         private static string currentUserName;
         public static string connectstring = "Server=127.0.0.1;User ID=sqlUser;Password=Passw0rd!;Database=client_schedule;";
-        static public bool est = false;
+        static public bool est = true;
 
         public static int getCurrentUserId()
         {
@@ -138,7 +138,7 @@ namespace XufiScheduler
             for (int i = 1; i < 13; i++)
             {
                 datestring = newd.ToString("yyyy-MM-dd");
-                MySqlCommand cmd = new MySqlCommand($"SELECT DISTINCT COUNT(type) FROM appointment WHERE MONTH(start) = MONTH('{datestring}')", c);
+                MySqlCommand cmd = new MySqlCommand($"SELECT COUNT(DISTINCT type) FROM appointment WHERE MONTH(start) = MONTH('{datestring}')", c);
                 int types = Convert.ToInt32(cmd.ExecuteScalar());
                 dret.Add(i, types);
                 newd = newd.AddMonths(1);
@@ -367,8 +367,8 @@ namespace XufiScheduler
                     }
                     else
                     {
-                        appointmentDict.Add("start", rdr[9].ToString());
-                        appointmentDict.Add("end", rdr[10].ToString());
+                        appointmentDict.Add("start", DateTime.Parse(rdr[9].ToString()).ToUniversalTime().ToString());
+                        appointmentDict.Add("end", DateTime.Parse(rdr[10].ToString()).ToUniversalTime().ToString());
                     }
                     
                 }
