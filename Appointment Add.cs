@@ -56,19 +56,20 @@ namespace XufiScheduler
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            if(DataPipe.checkApptHours(dateTimePicker2.Value, dateTimePicker2.Value))
+            bool result2 = DataPipe.checkApptHours(dateTimePicker2.Value, dateTimePicker1.Value);
+            if(result2)
             {
-                MessageBox.Show("Appointment outside business hours, please retry Monday - Friday between 9 - 5", "Save Error", MessageBoxButtons.OK);
+                MessageBox.Show("Appointment outside business hours, please retry Monday - Friday between 9 - 5 EST OR overlaping appointment", "Save Error", MessageBoxButtons.OK);
             }
             else
             {
                 if (comboBox1.Enabled == true)
                 {
-                    bool result = DataPipe.addAppointment(Convert.ToInt32(comboBox1.Text), textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, dateTimePicker1.Value.ToString("yyyy-MM-dd HH:mm:ss"), dateTimePicker2.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                    bool result = DataPipe.addAppointment(Convert.ToInt32(comboBox1.Text), textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, dateTimePicker2.Value.ToString("yyyy-MM-dd HH:mm:ss"), dateTimePicker1.Value.ToString("yyyy-MM-dd HH:mm:ss"));
                 }
                 else
                 {
-                    DataPipe.updateAppointment(apptId, textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, dateTimePicker1.Value.ToString("yyyy-MM-dd HH:mm:ss"), dateTimePicker2.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                    DataPipe.updateAppointment(apptId, textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text, textBox8.Text, dateTimePicker2.Value.ToString("yyyy-MM-dd HH:mm:ss"), dateTimePicker1.Value.ToString("yyyy-MM-dd HH:mm:ss"));
                 }
                 ManageAppointments refreshView = (ManageAppointments)Application.OpenForms["ManageAppointments"];
                 refreshView.populate();
