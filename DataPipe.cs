@@ -108,8 +108,8 @@ namespace XufiScheduler
                 {
                     while (rdr.Read())
                     {
-                        Appointment appointment = new Appointment();
-                        appointment.start = 
+                        //Appointment appointment = new Appointment();
+                        //appointment.start = 
                         tmp1 = DateTime.Parse(rdr[0].ToString());
                         tmp2 = DateTime.Parse(rdr[1].ToString());
                         double tmp3 = tmp2.Subtract(tmp1).TotalHours;
