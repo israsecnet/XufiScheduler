@@ -82,12 +82,12 @@ namespace XufiScheduler
             }
             
         }
-        public static Dictionary<int, double> getConsultSchedule()
+        public static Dictionary<int, List<Appointment>> getConsultSchedule()
         {
             MySqlConnection c = new MySqlConnection(DataPipe.connectstring);
             c.Open();
             Dictionary<int, List<Appointment>> tmpDict = new Dictionary<int, List<Appointment>>();
-            List<Appointment> tmpList = new List<Appointment>();
+           
             MySqlCommand cmd = new MySqlCommand($"SELECT DISTINCT userID FROM appointment", c);
             int totalIds = 0;
             using (MySqlDataReader rdr = cmd.ExecuteReader())
@@ -103,21 +103,27 @@ namespace XufiScheduler
             DateTime tmp1,tmp2;
             for (int i = 1; i < totalIds + 1; i++)
             {
-                cmd = new MySqlCommand($"SELECT start, end FROM appointment WHERE userId={i.ToString()}", c);
+                List<Appointment> tmpList = new List<Appointment>();
+                cmd = new MySqlCommand($"SELECT customerId, title, description, location, contact, type, url, start, end FROM appointment WHERE userId={i.ToString()}", c);
                 using (MySqlDataReader rdr = cmd.ExecuteReader())
                 {
                     while (rdr.Read())
                     {
                         Appointment appointment = new Appointment();
-                        appointment.start = 
-                        tmp1 = DateTime.Parse(rdr[0].ToString());
-                        tmp2 = DateTime.Parse(rdr[1].ToString());
-                        double tmp3 = tmp2.Subtract(tmp1).TotalHours;
-                        diffHours += tmp3;
+                        appointment.customerId = Convert.ToInt32(rdr[0]);
+                        appointment.title = Convert.ToString(rdr[1]);
+                        appointment.description = Convert.ToString(rdr[2]);
+                        appointment.location = Convert.ToString(rdr[3]);
+                        appointment.contact = Convert.ToString(rdr[4]);
+                        appointment.type = Convert.ToString(rdr[5]);
+                        appointment.url = Convert.ToString(rdr[6]);
+                        appointment.start = DateTime.Parse(rdr[7].ToString());
+                        appointment.end = DateTime.Parse(rdr[8].ToString());;
+                        tmpList.Add(appointment);
                     }
                     rdr.Close();
                 }
-                tmpDict.Add(i, diffHours);
+                tmpDict.Add(i, tmpList);
             }
             return tmpDict;
         }
