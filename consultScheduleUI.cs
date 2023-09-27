@@ -25,24 +25,27 @@ namespace XufiScheduler
 
                 FlowLayoutPanel flp = new FlowLayoutPanel
                 {
-                    Size = new System.Drawing.Size(410, 26)
+                    WrapContents = true,
+                    AutoSize = true,
+                    AutoSizeMode = AutoSizeMode.GrowAndShrink
                 };
                 Label startTime = new Label()
                 {
-                    Text=appointment.start.ToString("ddd HH:mm")
+                    Text="Start: " + appointment.start.ToString("ddd HH:mm")
                 };
                 Label EndTime = new Label()
                 {
-                    Text = appointment.end.ToString("ddd HH:mm")
+                    Text = "End: " + appointment.end.ToString("ddd HH:mm")
                 };
                 Label Title = new Label()
                 {
-                    Text = appointment.title.ToString()
+                    Text = "Title: " + appointment.title.ToString()
                 };
                 Dictionary<string, string> tmpdict = DataPipe.getCustomerDetails(appointment.customerId);
+                string name = tmpdict["customerName"];
                 Label CustomerName = new Label()
                 {
-                    Text = tmpdict["customerName"].ToString()
+                    Text = "Customer Name:" + name
                 };
                 flp.Controls.Add(startTime);
                 flp.Controls.Add(EndTime);
