@@ -37,7 +37,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 415);
+            this.button1.Location = new System.Drawing.Point(12, 497);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(156, 23);
             this.button1.TabIndex = 0;
@@ -47,7 +47,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(12, 386);
+            this.button2.Location = new System.Drawing.Point(12, 468);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(318, 23);
             this.button2.TabIndex = 1;
@@ -57,7 +57,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(174, 415);
+            this.button3.Location = new System.Drawing.Point(174, 497);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(156, 23);
             this.button3.TabIndex = 2;
@@ -67,7 +67,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(713, 415);
+            this.button4.Location = new System.Drawing.Point(993, 496);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 3;
@@ -79,14 +79,14 @@
             // 
             this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 12);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(776, 369);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1056, 450);
             this.flowLayoutPanel1.TabIndex = 4;
             // 
             // Reports
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1080, 530);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);

@@ -46,7 +46,7 @@
             // 
             this.flowLayoutPanel1.Location = new System.Drawing.Point(6, 30);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(410, 325);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(604, 147);
             this.flowLayoutPanel1.TabIndex = 1;
             // 
             // consultScheduleUI
@@ -57,7 +57,7 @@
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.label1);
             this.Name = "consultScheduleUI";
-            this.Size = new System.Drawing.Size(429, 358);
+            this.Size = new System.Drawing.Size(613, 180);
             this.ResumeLayout(false);
             this.PerformLayout();
 
