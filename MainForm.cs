@@ -390,12 +390,12 @@ namespace XufiScheduler
             if (label8.Text == "UTC")
             {
                 label8.Text = "EST";
-                DataPipe.est = true;
+                
             }
             else
             {
                 label8.Text = "UTC";
-                DataPipe.est = false;
+
             }
         }
     }
