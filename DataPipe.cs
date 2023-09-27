@@ -102,7 +102,7 @@ namespace XufiScheduler
             for (int i = 1; i < totalIds + 1; i++)
             {
                 List<Appointment> tmpList = new List<Appointment>();
-                cmd = new MySqlCommand($"SELECT customerId, title, description, location, contact, type, url, start, end FROM appointment WHERE userId={i.ToString()} AND MONTH(start)=MONTH('{DateTime.Now.ToString("yyyy-MM-dd")}')", c);
+                cmd = new MySqlCommand($"SELECT customerId, title, description, location, contact, type, url, start, end FROM appointment WHERE userId={i.ToString()} AND MONTH(start)=MONTH('{DateTime.Now.ToString("yyyy-MM-dd")}') ORDER BY start ASC", c);
                 using (MySqlDataReader rdr = cmd.ExecuteReader())
                 {
                     while (rdr.Read())
